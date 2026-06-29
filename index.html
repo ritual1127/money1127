@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>송금 요청</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #f6f8fb;
+      color: #111827;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 430px;
+      background: #ffffff;
+      border: 1px solid #e5eaf1;
+      border-radius: 18px;
+      padding: 26px;
+      box-shadow: 0 16px 42px rgba(15, 23, 42, 0.08);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      color: #2563eb;
+      font-weight: 900;
+      font-size: 15px;
+    }
+
+    .logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: #2563eb;
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 25px;
+      line-height: 1.25;
+    }
+
+    p {
+      margin: 0 0 20px;
+      color: #64748b;
+      line-height: 1.55;
+      font-size: 15px;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 7px;
+      font-weight: 800;
+      font-size: 14px;
+      color: #334155;
+    }
+
+    input,
+    select {
+      width: 100%;
+      height: 49px;
+      border: 1px solid #dbe3ef;
+      border-radius: 12px;
+      padding: 0 14px;
+      font-size: 16px;
+      outline: none;
+      background: #ffffff;
+      color: #111827;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.11);
+    }
+
+    .person-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 18px 0 8px;
+    }
+
+    button,
+    a.button {
+      width: 100%;
+      min-height: 52px;
+      border: 0;
+      border-radius: 12px;
+      background: #2563eb;
+      color: white;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      text-decoration: none;
+      padding: 0 14px;
+      text-align: center;
+    }
+
+    .person-buttons button {
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #e2e8f0;
+    }
+
+    .person-buttons button.active {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-color: #93c5fd;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .sub {
+      background: #f8fafc;
+      color: #1e293b;
+      border: 1px solid #dbe3ef;
+    }
+
+    .primary {
+      margin-top: 18px;
+    }
+
+    .money {
+      font-size: 38px;
+      font-weight: 950;
+      margin: 20px 0 6px;
+    }
+
+    .notice {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 13px 14px;
+      font-size: 14px;
+      font-weight: 800;
+      margin-top: 14px;
+    }
+
+    .summary,
+    .account-box {
+      background: #f8fafc;
+      border: 1px solid #e5eaf1;
+      border-radius: 14px;
+      padding: 15px;
+      margin-top: 16px;
+      color: #475569;
+      line-height: 1.65;
+      font-size: 14px;
+      word-break: break-all;
+    }
+
+    .account-box strong {
+      color: #111827;
+      font-size: 16px;
+    }
+
+    .safe {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 11px;
+      color: #94a3b8;
+      letter-spacing: 0.2px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <div class="brand">
+      <div class="logo">₩</div>
+      <span>간편 송금 요청</span>
+    </div>
+
+    <section id="maker">
+      <h1>송금 링크 만들기</h1>
+      <p>받는 사람을 선택하고 상대방 이름, 금액을 입력하면 공유 링크가 만들어집니다.</p>
+
+      <div class="person-buttons">
+        <button id="parkBtn" class="active" onclick="setPerson('park')">박지완</button>
+        <button id="jangBtn" onclick="setPerson('jang')">장우영</button>
+      </div>
+
+      <label>송금할 사람 이름</label>
+      <input id="payerName" placeholder="예: 민수" />
+
+      <label>받는 사람 이름</label>
+      <select id="receiverName">
+        <option value="0" selected>박지완</option>
+        <option value="1">장우영</option>
+      </select>
+
+      <label>은행명</label>
+      <select id="bank">
+        <option value="0" selected>토스뱅크</option>
+      </select>
+
+      <label>계좌번호</label>
+      <select id="account">
+        <option value="0" selected>100257070784</option>
+        <option value="1">100167624090</option>
+      </select>
+
+      <label>받을 금액</label>
+      <input id="amount" type="number" placeholder="예: 15000" />
+
+      <button class="primary" onclick="makeLink()">송금 링크 만들기</button>
+
+      <div id="result" class="summary hidden"></div>
+
+      <div id="shareActions" class="actions hidden">
+        <button class="sub" onclick="copyLink()">링크 복사</button>
+        <button onclick="shareLink()">공유하기</button>
+      </div>
+    </section>
+
+    <section id="payer" class="hidden">
+      <h1 id="payTitle">송금해주세요</h1>
+      <p id="payText"></p>
+
+      <div class="money" id="payAmount"></div>
+
+      <div class="notice">30분 내로 송금해주세요.</div>
+
+      <a id="tossLink" class="button primary" href="#" target="_self">토스 앱으로 바로 송금</a>
+
+      <div class="account-box">
+        토스 앱이 열리지 않으면 아래 계좌로 송금해주세요.<br />
+        <strong id="fallbackAccount"></strong>
+      </div>
+
+      <div class="safe">
+        금액과 받는 사람 정보를 확인한 뒤 송금해주세요.
+      </div>
+    </section>
+
+    <div class="footer">made by ritual</div>
+  </main>
+
+  <script>
+    const people = [
+      { name: "박지완", bank: "토스뱅크", account: "100257070784" },
+      { name: "장우영", bank: "토스뱅크", account: "100167624090" }
+    ];
+
+    const maker = document.getElementById("maker");
+    const payer = document.getElementById("payer");
+
+    function encodeData(text) {
+      const bytes = new TextEncoder().encode(text);
+      let binary = "";
+
+      bytes.forEach(byte => {
+        binary += String.fromCharCode(byte);
+      });
+
+      return btoa(binary)
+        .replaceAll("+", "-")
+        .replaceAll("/", "_")
+        .replaceAll("=", "");
+    }
+
+    function decodeData(text) {
+      text = text.replaceAll("-", "+").replaceAll("_", "/");
+
+      while (text.length % 4) {
+        text += "=";
+      }
+
+      const binary = atob(text);
+      const bytes = new Uint8Array(binary.length);
+
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+
+      return new TextDecoder().decode(bytes);
+    }
+
+    function setPerson(person) {
+      const receiverName = document.getElementById("receiverName");
+      const account = document.getElementById("account");
+      const parkBtn = document.getElementById("parkBtn");
+      const jangBtn = document.getElementById("jangBtn");
+
+      if (person === "jang") {
+        receiverName.value = "1";
+        account.value = "1";
+        jangBtn.classList.add("active");
+        parkBtn.classList.remove("active");
+      } else {
+        receiverName.value = "0";
+        account.value = "0";
+        parkBtn.classList.add("active");
+        jangBtn.classList.remove("active");
+      }
+    }
+
+    function makeTossUrl(amount, bank, account) {
+      return `supertoss://send?amount=${encodeURIComponent(amount)}` +
+        `&bank=${encodeURIComponent(bank)}` +
+        `&accountNo=${encodeURIComponent(account)}` +
+        `&origin=link`;
+    }
+
+    function openPaymentPage() {
+      const hash = location.hash.replace("#", "");
+      if (!hash) return;
+
+      try {
+        const parts = decodeData(hash).split("|");
+
+        const receiverIndex = Number(parts[0]);
+        const amount = parts[1];
+        const payerName = parts.slice(2).join("|");
+        const receiver = people[receiverIndex];
+
+        if (!receiver || !amount || !payerName) return;
+
+        maker.classList.add("hidden");
+        payer.classList.remove("hidden");
+
+        const amountText = Number(amount).toLocaleString("ko-KR");
+
+        document.title = `${payerName}님 송금해주세요`;
+
+        document.getElementById("payTitle").textContent =
+          `${payerName}님, 송금해주세요`;
+
+        document.getElementById("payText").textContent =
+          `${receiver.name}님에게 보내는 송금 요청입니다.`;
+
+        document.getElementById("payAmount").textContent =
+          `${amountText}원`;
+
+        document.getElementById("fallbackAccount").textContent =
+          `${receiver.bank} ${receiver.account}`;
+
+        const tossUrl = makeTossUrl(amount, receiver.bank, receiver.account);
+        document.getElementById("tossLink").setAttribute("href", tossUrl);
+      } catch {
+        alert("송금 링크가 올바르지 않습니다.");
+      }
+    }
+
+    function makeLink() {
+      const payerName = document.getElementById("payerName").value.trim();
+      const receiverIndex = document.getElementById("receiverName").value;
+      const amount = document.getElementById("amount").value.trim();
+
+      if (!payerName || !amount) {
+        alert("송금할 사람 이름과 금액을 입력해주세요.");
+        return;
+      }
+
+      const packed = [receiverIndex, amount, payerName].join("|");
+
+      window.createdLink =
+        location.origin +
+        location.pathname +
+        "#" +
+        encodeData(packed);
+
+      window.shareTitle = `${payerName}님 송금해주세요`;
+      window.shareText = `${payerName}님, 30분 내로 송금해주세요.`;
+
+      const result = document.getElementById("result");
+      result.classList.remove("hidden");
+      result.innerHTML =
+        `<strong>${payerName}님 송금해주세요</strong><br>` +
+        `30분 내로 송금해주세요.<br><br>` +
+        `${window.createdLink}`;
+
+      document.getElementById("shareActions").classList.remove("hidden");
+    }
+
+    async function copyLink() {
+      if (!window.createdLink) {
+        alert("먼저 송금 링크를 만들어주세요.");
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(window.createdLink);
+        alert("링크가 복사됐습니다.");
+      } catch {
+        alert("복사가 안 되면 링크를 직접 꾹 눌러 복사해주세요.");
+      }
+    }
+
+    async function shareLink() {
+      if (!window.createdLink) {
+        alert("먼저 송금 링크를 만들어주세요.");
+        return;
+      }
+
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: window.shareTitle,
+            text: window.shareText,
+            url: window.createdLink
+          });
+        } catch {}
+      } else {
+        await copyLink();
+      }
+    }
+
+    setPerson("park");
+    openPaymentPage();
+  </script>
+</body>
+</html>
