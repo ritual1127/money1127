@@ -50,17 +50,25 @@
       background: #f6f8fb;
       color: #111827;
     }
+
     .page {
-      padding: 0;
+      width: 100%;
+      min-height: 100svh;
+      display: grid;
+      place-items: stretch center;
+      padding: max(14px, env(safe-area-inset-top)) 14px max(14px, env(safe-area-inset-bottom));
     }
 
     .wrap {
-      width: 100%;
-      max-width: none;
-      min-height: 100svh;
-      border: 0;
-      border-radius: 0;
-      box-shadow: none;
+      width: min(100%, 430px);
+      min-height: calc(100svh - 28px);
+      background: #ffffff;
+      border: 1px solid #e5eaf1;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 16px 42px rgba(15, 23, 42, 0.08);
+      display: flex;
+      flex-direction: column;
     }
 
     .screen {
