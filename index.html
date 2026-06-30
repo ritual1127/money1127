@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
   />
   <meta name="format-detection" content="telephone=no" />
   <meta name="robots" content="noindex,nofollow,noarchive,nosnippet" />
@@ -34,47 +34,41 @@
       width: 100%;
       min-height: 100%;
       overflow-x: hidden;
+      overflow-y: auto;
       text-size-adjust: 100%;
       -webkit-text-size-adjust: 100%;
-      touch-action: manipulation;
-      background: #f6f8fb;
+      background: #f4f7fb;
     }
 
     body {
       width: 100%;
       min-width: 320px;
-      min-height: 100svh;
+      min-height: 100%;
       margin: 0;
       overflow-x: hidden;
-      overscroll-behavior: none;
-      background: #f6f8fb;
-      color: #111827;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      background:
+        radial-gradient(circle at top left, rgba(76, 154, 255, 0.16), transparent 34%),
+        linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
+      color: #172033;
     }
 
     .page {
       width: 100%;
-      min-height: 100svh;
-      display: grid;
-      place-items: stretch center;
-      padding: max(14px, env(safe-area-inset-top)) 14px max(14px, env(safe-area-inset-bottom));
+      min-height: 100dvh;
+      padding: max(18px, env(safe-area-inset-top)) 14px max(22px, env(safe-area-inset-bottom));
     }
 
     .wrap {
       width: min(100%, 430px);
-      min-height: calc(100svh - 28px);
-      background: #ffffff;
-      border: 1px solid #e5eaf1;
-      border-radius: 18px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(214, 225, 238, 0.9);
+      border-radius: 24px;
       padding: 24px;
-      box-shadow: 0 16px 42px rgba(15, 23, 42, 0.08);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .screen {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
+      box-shadow: 0 18px 50px rgba(49, 72, 105, 0.12);
+      backdrop-filter: blur(12px);
     }
 
     .brand {
@@ -88,19 +82,20 @@
     }
 
     .logo {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: #2563eb;
+      width: 36px;
+      height: 36px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #2563eb, #60a5fa);
       color: white;
       display: grid;
       place-items: center;
-      font-weight: 900;
+      font-weight: 950;
       flex: 0 0 auto;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.22);
     }
 
     h1 {
-      margin: 0 0 8px;
+      margin: 0 0 9px;
       font-size: 25px;
       line-height: 1.25;
       letter-spacing: 0;
@@ -109,44 +104,59 @@
     p {
       margin: 0 0 20px;
       color: #64748b;
-      line-height: 1.55;
+      line-height: 1.58;
       font-size: 15px;
     }
 
     label {
       display: block;
       margin: 15px 0 7px;
-      font-weight: 800;
+      font-weight: 850;
       font-size: 14px;
       color: #334155;
     }
 
     input,
-    select {
+    select,
+    textarea {
       width: 100%;
-      height: 49px;
-      border: 1px solid #dbe3ef;
-      border-radius: 12px;
-      padding: 0 14px;
+      border: 1px solid #dce6f2;
+      border-radius: 16px;
+      padding: 0 15px;
       font-size: 16px;
       outline: none;
-      background: #ffffff;
+      background: #fbfdff;
       color: #111827;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    input,
+    select {
+      height: 52px;
+    }
+
+    textarea {
+      min-height: 88px;
+      padding-top: 13px;
+      resize: vertical;
+      line-height: 1.5;
     }
 
     input:focus,
-    select:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.11);
+    select:focus,
+    textarea:focus {
+      border-color: #7fb1ff;
+      box-shadow: 0 0 0 4px rgba(76, 154, 255, 0.15);
+      background: #ffffff;
     }
 
     button,
     a.button {
       width: 100%;
-      min-height: 52px;
+      min-height: 54px;
       border: 0;
-      border-radius: 12px;
-      background: #2563eb;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
       color: white;
       font-size: 16px;
       font-weight: 900;
@@ -154,8 +164,14 @@
       display: grid;
       place-items: center;
       text-decoration: none;
-      padding: 0 14px;
+      padding: 0 15px;
       text-align: center;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.2);
+    }
+
+    button:active,
+    a.button:active {
+      transform: translateY(1px);
     }
 
     .person-buttons {
@@ -166,15 +182,16 @@
     }
 
     .person-buttons button {
-      background: #f1f5f9;
+      background: #f3f7fc;
       color: #334155;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #dde8f5;
+      box-shadow: none;
     }
 
     .person-buttons button.active {
-      background: #eff6ff;
+      background: #eaf3ff;
       color: #1d4ed8;
-      border-color: #93c5fd;
+      border-color: #9fc8ff;
     }
 
     .primary {
@@ -182,9 +199,10 @@
     }
 
     .sub {
-      background: #f8fafc;
+      background: #f7faff;
       color: #1e293b;
-      border: 1px solid #dbe3ef;
+      border: 1px solid #dbe6f3;
+      box-shadow: none;
     }
 
     .actions {
@@ -194,37 +212,39 @@
       margin-top: 12px;
     }
 
-    .payer-main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
     .amount-area {
-      margin: auto 0 18px;
-      padding: 18px 0;
+      margin: 24px 0 18px;
+      padding: 16px 0;
     }
 
     .money {
-      font-size: 42px;
+      font-size: 43px;
       font-weight: 950;
       margin: 20px 0 6px;
       letter-spacing: 0;
+      word-break: break-word;
     }
 
     .summary,
     .account-box,
     .more-box,
-    .expired-box {
-      background: #f8fafc;
-      border: 1px solid #e5eaf1;
-      border-radius: 14px;
+    .expired-box,
+    .reason-box {
+      background: #f8fbff;
+      border: 1px solid #e3ecf6;
+      border-radius: 18px;
       padding: 15px;
       margin-top: 16px;
       color: #475569;
       line-height: 1.65;
       font-size: 14px;
       word-break: break-all;
+    }
+
+    .reason-box strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #172033;
     }
 
     .expired-box {
@@ -249,14 +269,15 @@
 
     .mini-button {
       width: auto;
-      min-height: 38px;
-      border-radius: 10px;
-      padding: 0 13px;
+      min-height: 40px;
+      border-radius: 13px;
+      padding: 0 14px;
       font-size: 13px;
-      background: #eef2ff;
+      background: #eef5ff;
       color: #1d4ed8;
-      border: 1px solid #c7d2fe;
+      border: 1px solid #c7dcff;
       white-space: nowrap;
+      box-shadow: none;
     }
 
     .safe {
@@ -270,32 +291,41 @@
       margin-top: 12px;
       background: #ffffff;
       color: #1e293b;
-      border: 1px solid #dbe3ef;
+      border: 1px solid #dbe6f3;
+      box-shadow: none;
     }
 
     .bank-grid {
       display: grid;
-      gap: 8px;
+      gap: 10px;
       margin-top: 12px;
     }
 
     .bank-button {
-      min-height: 48px;
+      min-height: 62px;
       background: #ffffff;
       color: #111827;
-      border: 1px solid #dbe3ef;
+      border: 1px solid #dbe6f3;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      font-size: 14px;
-      font-weight: 850;
+      font-size: 16px;
+      font-weight: 900;
+      box-shadow: 0 8px 20px rgba(49, 72, 105, 0.07);
     }
 
     .bank-button span {
-      color: #64748b;
+      color: #2563eb;
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .hint {
+      margin-top: 7px;
+      color: #7c8ca3;
       font-size: 12px;
-      font-weight: 750;
+      line-height: 1.45;
     }
 
     .footer {
@@ -313,6 +343,7 @@
     @media (max-width: 360px) {
       .wrap {
         padding: 20px;
+        border-radius: 20px;
       }
 
       h1 {
@@ -338,22 +369,22 @@
         <span>간편 송금 요청</span>
       </div>
 
-      <section id="maker" class="screen">
+      <section id="maker">
         <h1>송금 링크 만들기</h1>
-        <p>받는 사람과 보내는 사람 이름, 금액을 입력하면 하루 동안만 열리는 공유 링크가 만들어집니다.</p>
+        <p>보내는 사람 이름, 받는 사람, 금액과 사유를 입력하면 하루 동안 열리는 공유 링크가 만들어집니다.</p>
 
         <div class="person-buttons">
-          <button id="parkBtn" class="active" onclick="setPerson('park')">박○○</button>
-          <button id="jangBtn" onclick="setPerson('jang')">장○○</button>
+          <button id="parkBtn" class="active" onclick="setPerson('park')">박님</button>
+          <button id="jangBtn" onclick="setPerson('jang')">장님</button>
         </div>
 
-        <label for="payerName">송금할 사람 이름</label>
+        <label for="payerName">보내는 사람 이름</label>
         <input id="payerName" placeholder="예: 김민수" />
 
         <label for="receiverName">받는 사람 이름</label>
         <select id="receiverName">
-          <option value="0" selected>박○○</option>
-          <option value="1">장○○</option>
+          <option value="0" selected>박님</option>
+          <option value="1">장님</option>
         </select>
 
         <label for="bank">은행명</label>
@@ -368,7 +399,11 @@
         </select>
 
         <label for="amount">받을 금액</label>
-        <input id="amount" type="number" inputmode="numeric" placeholder="예: 15000" />
+        <input id="amount" type="text" inputmode="decimal" placeholder="예: 15000 또는 10000+5000=" />
+        <div class="hint">수식을 쓰고 끝에 = 를 붙이면 자동으로 계산됩니다.</div>
+
+        <label for="reason">송금 사유</label>
+        <textarea id="reason" placeholder="예: 저녁값, 회비, 정산금"></textarea>
 
         <button class="primary" onclick="makeLink()">송금 링크 만들기</button>
 
@@ -380,65 +415,73 @@
         </div>
       </section>
 
-      <section id="payer" class="screen hidden">
-        <div class="payer-main">
-          <h1 id="payTitle">송금해주세요</h1>
-          <p id="payText"></p>
+      <section id="payer" class="hidden">
+        <h1 id="payTitle">송금해주세요</h1>
+        <p id="payText"></p>
 
-          <div class="amount-area">
-            <div class="money" id="payAmount"></div>
-            <a id="tossLink" class="button primary" href="#" target="_self">토스로 바로 송금</a>
+        <div class="amount-area">
+          <div class="money" id="payAmount"></div>
+          <a id="tossLink" class="button primary" href="#" target="_self">토스로 바로 송금</a>
+        </div>
+
+        <div id="payReasonBox" class="reason-box hidden">
+          <strong>송금 사유</strong>
+          <span id="payReason"></span>
+        </div>
+
+        <div class="account-box">
+          토스 앱이 열리지 않으면 아래 계좌로 송금해주세요.
+
+          <div class="account-row">
+            <strong id="fallbackAccount"></strong>
+            <button class="mini-button" onclick="copyAccount()">복사</button>
           </div>
+        </div>
 
-          <div class="account-box">
-            토스 앱이 열리지 않으면 아래 계좌로 송금해주세요.
+        <button class="more-toggle" onclick="toggleMoreBanks()">더보기</button>
 
-            <div class="account-row">
-              <strong id="fallbackAccount"></strong>
-              <button class="mini-button" onclick="copyAccount()">복사</button>
-            </div>
+        <div id="moreBanks" class="more-box hidden">
+          계좌번호를 복사한 뒤 원하는 은행 앱을 열어 송금해주세요.
+
+          <div class="bank-grid">
+            <button class="bank-button" onclick="openBankApp('kakao')">
+              카카오뱅크
+              <span>앱 열기</span>
+            </button>
+
+            <button class="bank-button" onclick="openBankApp('nh')">
+              농협은행
+              <span>앱 열기</span>
+            </button>
+
+            <button class="bank-button" onclick="openBankApp('hana')">
+              하나은행
+              <span>앱 열기</span>
+            </button>
+
+            <button class="bank-button" onclick="openBankApp('shinhan')">
+              신한은행
+              <span>앱 열기</span>
+            </button>
+
+            <button class="bank-button" onclick="openBankApp('kb')">
+              국민은행
+              <span>앱 열기</span>
+            </button>
+
+            <button class="bank-button" onclick="openBankApp('woori')">
+              우리은행
+              <span>앱 열기</span>
+            </button>
           </div>
+        </div>
 
-          <button class="more-toggle" onclick="toggleMoreBanks()">더보기</button>
-
-          <div id="moreBanks" class="more-box hidden">
-            계좌번호를 복사한 뒤 원하는 은행 앱을 열어 송금해주세요.
-
-            <div class="bank-grid">
-              <button class="bank-button" onclick="openBankApp('nh')">
-                농협은행
-                <span>앱 열기</span>
-              </button>
-
-              <button class="bank-button" onclick="openBankApp('hana')">
-                하나은행
-                <span>앱 열기</span>
-              </button>
-
-              <button class="bank-button" onclick="openBankApp('shinhan')">
-                신한은행
-                <span>앱 열기</span>
-              </button>
-
-              <button class="bank-button" onclick="openBankApp('kb')">
-                국민은행
-                <span>앱 열기</span>
-              </button>
-
-              <button class="bank-button" onclick="openBankApp('woori')">
-                우리은행
-                <span>앱 열기</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="safe">
-            금액과 받는 사람 정보를 확인한 뒤 송금해주세요. 이 링크는 생성 후 24시간 동안만 열립니다.
-          </div>
+        <div class="safe">
+          금액과 받는 사람 정보를 확인하고 송금해주세요. 이 링크는 생성 후 24시간 동안만 열립니다.
         </div>
       </section>
 
-      <section id="expired" class="screen hidden">
+      <section id="expired" class="hidden">
         <h1>만료된 링크입니다</h1>
         <div class="expired-box">
           이 송금 요청 링크는 생성 후 24시간이 지나 만료되었습니다.
@@ -453,11 +496,15 @@
     const EXPIRE_MS = 24 * 60 * 60 * 1000;
 
     const people = [
-      { name: "박○○", bank: "토스뱅크", account: "100257070784" },
-      { name: "장○○", bank: "토스뱅크", account: "100167624090" }
+      { name: "박님", bank: "토스뱅크", account: "100257070784" },
+      { name: "장님", bank: "토스뱅크", account: "100167624090" }
     ];
 
     const bankApps = {
+      kakao: {
+        name: "카카오뱅크",
+        schemes: ["kakaobank://", "kakaobank://main"]
+      },
       nh: {
         name: "농협은행",
         schemes: ["nhsmartbanking://", "nhbank://", "nonghyup://"]
@@ -486,6 +533,47 @@
 
     let currentReceiver = null;
     let currentAmount = "";
+    let currentReason = "";
+
+    const amountInput = document.getElementById("amount");
+
+    amountInput.addEventListener("input", () => {
+      const value = amountInput.value.trim();
+
+      if (value.endsWith("=")) {
+        const expression = value.slice(0, -1).replaceAll(",", "");
+
+        try {
+          const result = calculateExpression(expression);
+
+          if (Number.isFinite(result) && result >= 0) {
+            amountInput.value = String(Math.round(result));
+          }
+        } catch {}
+      }
+    });
+
+    function calculateExpression(expression) {
+      if (!/^[0-9+\-*/().\s]+$/.test(expression)) {
+        throw new Error("invalid expression");
+      }
+
+      return Function('"use strict"; return (' + expression + ')')();
+    }
+
+    function normalizeAmount(value) {
+      const clean = value.replaceAll(",", "").trim();
+
+      if (clean.endsWith("=")) {
+        return String(Math.round(calculateExpression(clean.slice(0, -1))));
+      }
+
+      if (/^[0-9+\-*/().\s]+$/.test(clean) && /[+\-*/]/.test(clean)) {
+        return String(Math.round(calculateExpression(clean)));
+      }
+
+      return clean;
+    }
 
     function encodeData(text) {
       const bytes = new TextEncoder().encode(text);
@@ -537,10 +625,11 @@
       }
     }
 
-    function makeTossUrl(amount, bank, account) {
+    function makeTossUrl(amount, bank, account, reason) {
       return `supertoss://send?amount=${encodeURIComponent(amount)}` +
         `&bank=${encodeURIComponent(bank)}` +
         `&accountNo=${encodeURIComponent(account)}` +
+        `&memo=${encodeURIComponent(reason || "")}` +
         `&origin=link`;
     }
 
@@ -561,7 +650,8 @@
         const receiverIndex = Number(parts[0]);
         const amount = parts[1];
         const createdAt = Number(parts[2]);
-        const payerName = parts.slice(3).join("|");
+        const payerName = parts[3];
+        const reason = parts.slice(4).join("|");
         const receiver = people[receiverIndex];
 
         if (!receiver || !amount || !createdAt || !payerName) return;
@@ -573,19 +663,20 @@
 
         currentReceiver = receiver;
         currentAmount = amount;
+        currentReason = reason || "";
 
         maker.classList.add("hidden");
         payer.classList.remove("hidden");
 
         const amountText = Number(amount).toLocaleString("ko-KR");
 
-        document.title = `${payerName}님, ${amountText}원 송금 요청`;
+        document.title = `${payerName}님 ${amountText}원 송금 요청`;
 
         document.getElementById("payTitle").textContent =
-          `${payerName}님, 송금해주세요`;
+          `${payerName}님에게 송금해주세요`;
 
         document.getElementById("payText").textContent =
-          `${receiver.name}님에게 보내는 ${amountText}원 송금 요청입니다.`;
+          `${receiver.name}에게 보내는 ${amountText}원 송금 요청입니다.`;
 
         document.getElementById("payAmount").textContent =
           `${amountText}원`;
@@ -593,9 +684,14 @@
         document.getElementById("fallbackAccount").textContent =
           `${receiver.bank} ${receiver.account}`;
 
+        if (currentReason) {
+          document.getElementById("payReasonBox").classList.remove("hidden");
+          document.getElementById("payReason").textContent = currentReason;
+        }
+
         document.getElementById("tossLink").setAttribute(
           "href",
-          makeTossUrl(amount, receiver.bank, receiver.account)
+          makeTossUrl(amount, receiver.bank, receiver.account, currentReason)
         );
       } catch {
         alert("송금 링크가 올바르지 않습니다.");
@@ -605,17 +701,30 @@
     function makeLink() {
       const payerName = document.getElementById("payerName").value.trim();
       const receiverIndex = document.getElementById("receiverName").value;
-      const amount = document.getElementById("amount").value.trim();
+      const amountRaw = document.getElementById("amount").value.trim();
+      const reason = document.getElementById("reason").value.trim();
 
-      if (!payerName || !amount) {
-        alert("송금할 사람 이름과 금액을 입력해주세요.");
+      let amount = "";
+
+      try {
+        amount = normalizeAmount(amountRaw);
+      } catch {
+        alert("금액 수식을 확인해주세요.");
         return;
       }
+
+      if (!payerName || !amount || Number(amount) <= 0) {
+        alert("보내는 사람 이름과 금액을 입력해주세요.");
+        return;
+      }
+
+      amount = String(Math.round(Number(amount)));
+      document.getElementById("amount").value = amount;
 
       const amountText = Number(amount).toLocaleString("ko-KR");
       const receiver = people[Number(receiverIndex)];
       const createdAt = Date.now();
-      const packed = [receiverIndex, amount, createdAt, payerName].join("|");
+      const packed = [receiverIndex, amount, createdAt, payerName, reason].join("|");
 
       window.createdLink =
         location.origin +
@@ -623,20 +732,31 @@
         "#" +
         encodeData(packed);
 
-      window.shareTitle = `${payerName}님, ${amountText}원 송금 요청`;
+      window.shareTitle = `${payerName}님 ${amountText}원 송금 요청`;
       window.shareText =
         `${payerName}님에게 ${amountText}원 송금 요청이 도착했습니다. ` +
-        `받는 사람은 ${receiver.name}님이며, 링크는 24시간 동안만 열립니다.`;
+        `받는 사람은 ${receiver.name}이며 링크는 24시간 동안만 열립니다.` +
+        (reason ? ` 사유: ${reason}` : "");
 
       const result = document.getElementById("result");
       result.classList.remove("hidden");
       result.innerHTML =
-        `<strong>${payerName}님, ${amountText}원 송금 요청</strong><br>` +
-        `${receiver.name}님에게 보내는 송금 링크가 만들어졌습니다.<br>` +
-        `이 링크는 24시간 뒤 만료됩니다.<br><br>` +
+        `<strong>${payerName}님 ${amountText}원 송금 요청</strong><br>` +
+        `${receiver.name}에게 보내는 송금 링크가 만들어졌습니다.<br>` +
+        (reason ? `사유: ${escapeHtml(reason)}<br>` : "") +
+        `이 링크는 24시간 후 만료됩니다.<br><br>` +
         `${window.createdLink}`;
 
       document.getElementById("shareActions").classList.remove("hidden");
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
     }
 
     async function copyText(text, successMessage) {
