@@ -2,10 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="format-detection" content="telephone=no" />
   <meta name="robots" content="noindex,nofollow,noarchive,nosnippet" />
 
@@ -17,11 +14,6 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="1200" />
   <meta property="og:type" content="website" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="송금 요청" />
-  <meta name="twitter:description" content="송금 요청 링크입니다." />
-  <meta name="twitter:image" content="https://www.naver1.cloud/og-image-mobile.png" />
 
   <style>
     * {
@@ -127,7 +119,6 @@
       outline: none;
       background: #fbfdff;
       color: #111827;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
     }
 
     input,
@@ -136,7 +127,9 @@
     }
 
     textarea {
-      min-height: 88px;
+      height: 52px;
+      min-height: 52px;
+      max-height: 92px;
       padding-top: 13px;
       resize: vertical;
       line-height: 1.5;
@@ -374,8 +367,8 @@
         <p>보내는 사람 이름, 받는 사람, 금액과 사유를 입력하면 하루 동안 열리는 공유 링크가 만들어집니다.</p>
 
         <div class="person-buttons">
-          <button id="parkBtn" class="active" onclick="setPerson('park')">박님</button>
-          <button id="jangBtn" onclick="setPerson('jang')">장님</button>
+          <button id="parkBtn" class="active" onclick="setPerson('park')">ritual</button>
+          <button id="jangBtn" onclick="setPerson('jang')">장우영</button>
         </div>
 
         <label for="payerName">보내는 사람 이름</label>
@@ -383,8 +376,8 @@
 
         <label for="receiverName">받는 사람 이름</label>
         <select id="receiverName">
-          <option value="0" selected>박님</option>
-          <option value="1">장님</option>
+          <option value="0" selected>ritual</option>
+          <option value="1">장우영</option>
         </select>
 
         <label for="bank">은행명</label>
@@ -403,7 +396,7 @@
         <div class="hint">수식을 쓰고 끝에 = 를 붙이면 자동으로 계산됩니다.</div>
 
         <label for="reason">송금 사유</label>
-        <textarea id="reason" placeholder="예: 저녁값, 회비, 정산금"></textarea>
+        <textarea id="reason" placeholder="예: 저녁값"></textarea>
 
         <button class="primary" onclick="makeLink()">송금 링크 만들기</button>
 
@@ -441,7 +434,7 @@
         <button class="more-toggle" onclick="toggleMoreBanks()">더보기</button>
 
         <div id="moreBanks" class="more-box hidden">
-          계좌번호를 복사한 뒤 원하는 은행 앱을 열어 송금해주세요.
+          원하는 은행 앱을 열면 계좌번호가 자동으로 복사됩니다.
 
           <div class="bank-grid">
             <button class="bank-button" onclick="openBankApp('kakao')">
@@ -494,16 +487,21 @@
 
   <script>
     const EXPIRE_MS = 24 * 60 * 60 * 1000;
+    const STORAGE_PREFIX = "paylink:";
 
     const people = [
-      { name: "박님", bank: "토스뱅크", account: "100257070784" },
-      { name: "장님", bank: "토스뱅크", account: "100167624090" }
+      { name: "ritual", bank: "토스뱅크", account: "100257070784" },
+      { name: "장우영", bank: "토스뱅크", account: "100167624090" }
     ];
 
     const bankApps = {
       kakao: {
         name: "카카오뱅크",
-        schemes: ["kakaobank://", "kakaobank://main"]
+        schemes: [
+          "kakaobank://send",
+          "kakaobank://transfer",
+          "kakaobank://"
+        ]
       },
       nh: {
         name: "농협은행",
@@ -530,12 +528,11 @@
     const maker = document.getElementById("maker");
     const payer = document.getElementById("payer");
     const expired = document.getElementById("expired");
+    const amountInput = document.getElementById("amount");
 
     let currentReceiver = null;
     let currentAmount = "";
     let currentReason = "";
-
-    const amountInput = document.getElementById("amount");
 
     amountInput.addEventListener("input", () => {
       const value = amountInput.value.trim();
@@ -575,35 +572,31 @@
       return clean;
     }
 
-    function encodeData(text) {
-      const bytes = new TextEncoder().encode(text);
-      let binary = "";
+    function makeToken() {
+      const bytes = new Uint8Array(6);
+      crypto.getRandomValues(bytes);
 
-      bytes.forEach(byte => {
-        binary += String.fromCharCode(byte);
-      });
-
-      return btoa(binary)
-        .replaceAll("+", "-")
-        .replaceAll("/", "_")
-        .replaceAll("=", "");
+      return Array.from(bytes)
+        .map(byte => byte.toString(36).padStart(2, "0"))
+        .join("")
+        .slice(0, 10);
     }
 
-    function decodeData(text) {
-      text = text.replaceAll("-", "+").replaceAll("_", "/");
+    function saveCompressedLink(data) {
+      const token = makeToken();
+      localStorage.setItem(STORAGE_PREFIX + token, JSON.stringify(data));
+      return token;
+    }
 
-      while (text.length % 4) {
-        text += "=";
+    function readCompressedLink(token) {
+      const raw = localStorage.getItem(STORAGE_PREFIX + token);
+      if (!raw) return null;
+
+      try {
+        return JSON.parse(raw);
+      } catch {
+        return null;
       }
-
-      const binary = atob(text);
-      const bytes = new Uint8Array(binary.length);
-
-      for (let i = 0; i < binary.length; i++) {
-        bytes[i] = binary.charCodeAt(i);
-      }
-
-      return new TextDecoder().decode(bytes);
     }
 
     function setPerson(person) {
@@ -641,61 +634,60 @@
     }
 
     function openPaymentPage() {
-      const hash = location.hash.replace("#", "");
-      if (!hash) return;
+      const params = new URLSearchParams(location.search);
+      const token = params.get("p");
 
-      try {
-        const parts = decodeData(hash).split("|");
+      if (!token) return;
 
-        const receiverIndex = Number(parts[0]);
-        const amount = parts[1];
-        const createdAt = Number(parts[2]);
-        const payerName = parts[3];
-        const reason = parts.slice(4).join("|");
-        const receiver = people[receiverIndex];
+      const data = readCompressedLink(token);
 
-        if (!receiver || !amount || !createdAt || !payerName) return;
-
-        if (Date.now() - createdAt > EXPIRE_MS) {
-          showExpired();
-          return;
-        }
-
-        currentReceiver = receiver;
-        currentAmount = amount;
-        currentReason = reason || "";
-
-        maker.classList.add("hidden");
-        payer.classList.remove("hidden");
-
-        const amountText = Number(amount).toLocaleString("ko-KR");
-
-        document.title = `${payerName}님 ${amountText}원 송금 요청`;
-
-        document.getElementById("payTitle").textContent =
-          `${payerName}님에게 송금해주세요`;
-
-        document.getElementById("payText").textContent =
-          `${receiver.name}에게 보내는 ${amountText}원 송금 요청입니다.`;
-
-        document.getElementById("payAmount").textContent =
-          `${amountText}원`;
-
-        document.getElementById("fallbackAccount").textContent =
-          `${receiver.bank} ${receiver.account}`;
-
-        if (currentReason) {
-          document.getElementById("payReasonBox").classList.remove("hidden");
-          document.getElementById("payReason").textContent = currentReason;
-        }
-
-        document.getElementById("tossLink").setAttribute(
-          "href",
-          makeTossUrl(amount, receiver.bank, receiver.account, currentReason)
-        );
-      } catch {
-        alert("송금 링크가 올바르지 않습니다.");
+      if (!data) {
+        alert("링크 정보를 찾을 수 없습니다. 같은 기기에서 만든 링크인지 확인해주세요.");
+        return;
       }
+
+      const receiver = people[Number(data.receiverIndex)];
+
+      if (!receiver || !data.amount || !data.createdAt || !data.payerName) return;
+
+      if (Date.now() - Number(data.createdAt) > EXPIRE_MS) {
+        showExpired();
+        return;
+      }
+
+      currentReceiver = receiver;
+      currentAmount = data.amount;
+      currentReason = data.reason || "";
+
+      maker.classList.add("hidden");
+      payer.classList.remove("hidden");
+
+      const amountText = Number(data.amount).toLocaleString("ko-KR");
+
+      document.title = `${data.payerName}님 ${amountText}원 송금 요청`;
+
+      document.getElementById("payTitle").textContent =
+        `${data.payerName}님에게 송금해주세요`;
+
+      document.getElementById("payText").textContent =
+        `${receiver.name}에게 ${amountText}원을 보내주세요.`;
+
+      document.getElementById("payAmount").textContent =
+        `${amountText}원`;
+
+      document.getElementById("fallbackAccount").textContent =
+        `${receiver.bank} ${receiver.account}`;
+
+      if (currentReason) {
+        document.getElementById("payReasonBox").classList.remove("hidden");
+        document.getElementById("payReason").textContent =
+          `${currentReason} 보내주세요`;
+      }
+
+      document.getElementById("tossLink").setAttribute(
+        "href",
+        makeTossUrl(data.amount, receiver.bank, receiver.account, currentReason)
+      );
     }
 
     function makeLink() {
@@ -723,27 +715,33 @@
 
       const amountText = Number(amount).toLocaleString("ko-KR");
       const receiver = people[Number(receiverIndex)];
-      const createdAt = Date.now();
-      const packed = [receiverIndex, amount, createdAt, payerName, reason].join("|");
+
+      const token = saveCompressedLink({
+        receiverIndex,
+        amount,
+        createdAt: Date.now(),
+        payerName,
+        reason
+      });
 
       window.createdLink =
         location.origin +
         location.pathname +
-        "#" +
-        encodeData(packed);
+        "?p=" +
+        encodeURIComponent(token);
 
       window.shareTitle = `${payerName}님 ${amountText}원 송금 요청`;
       window.shareText =
         `${payerName}님에게 ${amountText}원 송금 요청이 도착했습니다. ` +
-        `받는 사람은 ${receiver.name}이며 링크는 24시간 동안만 열립니다.` +
-        (reason ? ` 사유: ${reason}` : "");
+        `받는 사람은 ${receiver.name}입니다.` +
+        (reason ? ` ${reason} 보내주세요.` : "");
 
       const result = document.getElementById("result");
       result.classList.remove("hidden");
       result.innerHTML =
         `<strong>${payerName}님 ${amountText}원 송금 요청</strong><br>` +
-        `${receiver.name}에게 보내는 송금 링크가 만들어졌습니다.<br>` +
-        (reason ? `사유: ${escapeHtml(reason)}<br>` : "") +
+        `${receiver.name}에게 보내는 링크가 만들어졌습니다.<br>` +
+        (reason ? `${escapeHtml(reason)} 보내주세요.<br>` : "") +
         `이 링크는 24시간 후 만료됩니다.<br><br>` +
         `${window.createdLink}`;
 
@@ -759,10 +757,13 @@
         .replaceAll("'", "&#039;");
     }
 
-    async function copyText(text, successMessage) {
+    async function copyText(text, successMessage, silent = false) {
       try {
         await navigator.clipboard.writeText(text);
-        alert(successMessage);
+
+        if (!silent) {
+          alert(successMessage);
+        }
       } catch {
         const textarea = document.createElement("textarea");
         textarea.value = text;
@@ -774,9 +775,14 @@
 
         try {
           document.execCommand("copy");
-          alert(successMessage);
+
+          if (!silent) {
+            alert(successMessage);
+          }
         } catch {
-          alert("복사가 안 되면 내용을 길게 눌러 직접 복사해주세요.");
+          if (!silent) {
+            alert("복사가 안 되면 내용을 길게 눌러 직접 복사해주세요.");
+          }
         }
 
         textarea.remove();
@@ -792,13 +798,13 @@
       await copyText(window.createdLink, "링크가 복사되었습니다.");
     }
 
-    async function copyAccount() {
+    async function copyAccount(silent = false) {
       if (!currentReceiver) {
         alert("계좌 정보를 불러오지 못했습니다.");
         return;
       }
 
-      await copyText(currentReceiver.account, "계좌번호가 복사되었습니다.");
+      await copyText(currentReceiver.account, "계좌번호가 복사되었습니다.", silent);
     }
 
     async function shareLink() {
@@ -825,7 +831,7 @@
       moreBanks.classList.toggle("hidden");
     }
 
-    async function openBankApp(bankKey) {
+    function openBankApp(bankKey) {
       if (!currentReceiver) {
         alert("계좌 정보를 불러오지 못했습니다.");
         return;
@@ -834,13 +840,12 @@
       const app = bankApps[bankKey];
       if (!app) return;
 
-      await copyAccount();
-
       let opened = false;
 
       const onHidden = () => {
         if (document.hidden) {
           opened = true;
+          copyAccount(true);
         }
       };
 
@@ -858,7 +863,8 @@
         document.removeEventListener("visibilitychange", onHidden);
 
         if (!opened) {
-          alert(`${app.name} 앱이 설치되어 있지 않은 것 같습니다.`);
+          copyAccount(true);
+          alert(`${app.name} 앱을 열지 못했습니다. 계좌번호는 복사해두었습니다.`);
         }
       }, 2600);
     }
