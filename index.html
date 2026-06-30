@@ -486,188 +486,187 @@
   </div>
 
   <script>
-    const EXPIRE_MS = 24 * 60 * 60 * 1000;
-    const STORAGE_PREFIX = "paylink:";
+  const EXPIRE_MS = 24 * 60 * 60 * 1000;
 
-    const people = [
-      { name: "ritual", bank: "토스뱅크", account: "100257070784" },
-      { name: "장우영", bank: "토스뱅크", account: "100167624090" }
-    ];
+  const people = [
+    { name: "ritual", bank: "토스뱅크", account: "100257070784" },
+    { name: "장우영", bank: "토스뱅크", account: "100167624090" }
+  ];
 
-    const bankApps = {
-      kakao: {
-        name: "카카오뱅크",
-        schemes: [
-          "kakaobank://send",
-          "kakaobank://transfer",
-          "kakaobank://"
-        ]
-      },
-      nh: {
-        name: "농협은행",
-        schemes: ["nhsmartbanking://", "nhbank://", "nonghyup://"]
-      },
-      hana: {
-        name: "하나은행",
-        schemes: ["hanabank://", "hana1qbank://", "hanabanking://"]
-      },
-      shinhan: {
-        name: "신한은행",
-        schemes: ["shinhan-sbank://", "sol://", "shinhanbank://"]
-      },
-      kb: {
-        name: "국민은행",
-        schemes: ["kbbank://", "kb-bank://", "liivbank://"]
-      },
-      woori: {
-        name: "우리은행",
-        schemes: ["wooribank://", "newsmartpib://", "com.wooribank.smart.npib://"]
-      }
-    };
-
-    const maker = document.getElementById("maker");
-    const payer = document.getElementById("payer");
-    const expired = document.getElementById("expired");
-    const amountInput = document.getElementById("amount");
-
-    let currentReceiver = null;
-    let currentAmount = "";
-    let currentReason = "";
-
-    amountInput.addEventListener("input", () => {
-      const value = amountInput.value.trim();
-
-      if (value.endsWith("=")) {
-        const expression = value.slice(0, -1).replaceAll(",", "");
-
-        try {
-          const result = calculateExpression(expression);
-
-          if (Number.isFinite(result) && result >= 0) {
-            amountInput.value = String(Math.round(result));
-          }
-        } catch {}
-      }
-    });
-
-    function calculateExpression(expression) {
-      if (!/^[0-9+\-*/().\s]+$/.test(expression)) {
-        throw new Error("invalid expression");
-      }
-
-      return Function('"use strict"; return (' + expression + ')')();
+  const bankApps = {
+    kakao: {
+      name: "카카오뱅크",
+      schemes: ["kakaobank://send", "kakaobank://transfer", "kakaobank://"]
+    },
+    nh: {
+      name: "농협은행",
+      schemes: ["nhsmartbanking://", "nhbank://", "nonghyup://"]
+    },
+    hana: {
+      name: "하나은행",
+      schemes: ["hanabank://", "hana1qbank://", "hanabanking://"]
+    },
+    shinhan: {
+      name: "신한은행",
+      schemes: ["shinhan-sbank://", "sol://", "shinhanbank://"]
+    },
+    kb: {
+      name: "국민은행",
+      schemes: ["kbbank://", "kb-bank://", "liivbank://"]
+    },
+    woori: {
+      name: "우리은행",
+      schemes: ["wooribank://", "newsmartpib://", "com.wooribank.smart.npib://"]
     }
+  };
 
-    function normalizeAmount(value) {
-      const clean = value.replaceAll(",", "").trim();
+  const maker = document.getElementById("maker");
+  const payer = document.getElementById("payer");
+  const expired = document.getElementById("expired");
+  const amountInput = document.getElementById("amount");
 
-      if (clean.endsWith("=")) {
-        return String(Math.round(calculateExpression(clean.slice(0, -1))));
-      }
+  let currentReceiver = null;
+  let currentAmount = "";
+  let currentReason = "";
 
-      if (/^[0-9+\-*/().\s]+$/.test(clean) && /[+\-*/]/.test(clean)) {
-        return String(Math.round(calculateExpression(clean)));
-      }
+  amountInput.addEventListener("input", () => {
+    const value = amountInput.value.trim();
 
-      return clean;
-    }
-
-    function makeToken() {
-      const bytes = new Uint8Array(6);
-      crypto.getRandomValues(bytes);
-
-      return Array.from(bytes)
-        .map(byte => byte.toString(36).padStart(2, "0"))
-        .join("")
-        .slice(0, 10);
-    }
-
-    function saveCompressedLink(data) {
-      const token = makeToken();
-      localStorage.setItem(STORAGE_PREFIX + token, JSON.stringify(data));
-      return token;
-    }
-
-    function readCompressedLink(token) {
-      const raw = localStorage.getItem(STORAGE_PREFIX + token);
-      if (!raw) return null;
+    if (value.endsWith("=")) {
+      const expression = value.slice(0, -1).replaceAll(",", "");
 
       try {
-        return JSON.parse(raw);
-      } catch {
-        return null;
-      }
+        const result = calculateExpression(expression);
+
+        if (Number.isFinite(result) && result >= 0) {
+          amountInput.value = String(Math.round(result));
+        }
+      } catch {}
+    }
+  });
+
+  function calculateExpression(expression) {
+    if (!/^[0-9+\-*/().\s]+$/.test(expression)) {
+      throw new Error("invalid expression");
     }
 
-    function setPerson(person) {
-      const receiverName = document.getElementById("receiverName");
-      const account = document.getElementById("account");
-      const parkBtn = document.getElementById("parkBtn");
-      const jangBtn = document.getElementById("jangBtn");
+    return Function('"use strict"; return (' + expression + ')')();
+  }
 
-      if (person === "jang") {
-        receiverName.value = "1";
-        account.value = "1";
-        jangBtn.classList.add("active");
-        parkBtn.classList.remove("active");
-      } else {
-        receiverName.value = "0";
-        account.value = "0";
-        parkBtn.classList.add("active");
-        jangBtn.classList.remove("active");
-      }
+  function normalizeAmount(value) {
+    const clean = value.replaceAll(",", "").trim();
+
+    if (clean.endsWith("=")) {
+      return String(Math.round(calculateExpression(clean.slice(0, -1))));
     }
 
-    function makeTossUrl(amount, bank, account, reason) {
-      return `supertoss://send?amount=${encodeURIComponent(amount)}` +
-        `&bank=${encodeURIComponent(bank)}` +
-        `&accountNo=${encodeURIComponent(account)}` +
-        `&memo=${encodeURIComponent(reason || "")}` +
-        `&origin=link`;
+    if (/^[0-9+\-*/().\s]+$/.test(clean) && /[+\-*/]/.test(clean)) {
+      return String(Math.round(calculateExpression(clean)));
     }
 
-    function showExpired() {
-      maker.classList.add("hidden");
-      payer.classList.add("hidden");
-      expired.classList.remove("hidden");
-      document.title = "만료된 송금 요청";
+    return clean;
+  }
+
+  function encodeData(text) {
+    const bytes = new TextEncoder().encode(text);
+    let binary = "";
+
+    bytes.forEach(byte => {
+      binary += String.fromCharCode(byte);
+    });
+
+    return btoa(binary)
+      .replaceAll("+", "-")
+      .replaceAll("/", "_")
+      .replaceAll("=", "");
+  }
+
+  function decodeData(text) {
+    text = text.replaceAll("-", "+").replaceAll("_", "/");
+
+    while (text.length % 4) {
+      text += "=";
     }
 
-    function openPaymentPage() {
-      const params = new URLSearchParams(location.search);
-      const token = params.get("p");
+    const binary = atob(text);
+    const bytes = new Uint8Array(binary.length);
 
-      if (!token) return;
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
 
-      const data = readCompressedLink(token);
+    return new TextDecoder().decode(bytes);
+  }
 
-      if (!data) {
-        alert("링크 정보를 찾을 수 없습니다. 같은 기기에서 만든 링크인지 확인해주세요.");
-        return;
-      }
+  function setPerson(person) {
+    const receiverName = document.getElementById("receiverName");
+    const account = document.getElementById("account");
+    const parkBtn = document.getElementById("parkBtn");
+    const jangBtn = document.getElementById("jangBtn");
 
-      const receiver = people[Number(data.receiverIndex)];
+    if (person === "jang") {
+      receiverName.value = "1";
+      account.value = "1";
+      jangBtn.classList.add("active");
+      parkBtn.classList.remove("active");
+    } else {
+      receiverName.value = "0";
+      account.value = "0";
+      parkBtn.classList.add("active");
+      jangBtn.classList.remove("active");
+    }
+  }
 
-      if (!receiver || !data.amount || !data.createdAt || !data.payerName) return;
+  function makeTossUrl(amount, bank, account, reason) {
+    return `supertoss://send?amount=${encodeURIComponent(amount)}` +
+      `&bank=${encodeURIComponent(bank)}` +
+      `&accountNo=${encodeURIComponent(account)}` +
+      `&memo=${encodeURIComponent(reason || "")}` +
+      `&origin=link`;
+  }
 
-      if (Date.now() - Number(data.createdAt) > EXPIRE_MS) {
+  function showExpired() {
+    maker.classList.add("hidden");
+    payer.classList.add("hidden");
+    expired.classList.remove("hidden");
+    document.title = "만료된 송금 요청";
+  }
+
+  function openPaymentPage() {
+    const hash = location.hash.replace("#p=", "").replace("#", "");
+
+    if (!hash) return;
+
+    try {
+      const parts = decodeData(hash).split("|");
+
+      const receiverIndex = Number(parts[0]);
+      const amount = parts[1];
+      const createdAt = Number(parts[2]);
+      const payerName = parts[3];
+      const reason = parts.slice(4).join("|");
+      const receiver = people[receiverIndex];
+
+      if (!receiver || !amount || !createdAt || !payerName) return;
+
+      if (Date.now() - createdAt > EXPIRE_MS) {
         showExpired();
         return;
       }
 
       currentReceiver = receiver;
-      currentAmount = data.amount;
-      currentReason = data.reason || "";
+      currentAmount = amount;
+      currentReason = reason || "";
 
       maker.classList.add("hidden");
       payer.classList.remove("hidden");
 
-      const amountText = Number(data.amount).toLocaleString("ko-KR");
+      const amountText = Number(amount).toLocaleString("ko-KR");
 
-      document.title = `${data.payerName}님 ${amountText}원 송금 요청`;
+      document.title = `${payerName}님 ${amountText}원 송금 요청`;
 
       document.getElementById("payTitle").textContent =
-        `${data.payerName}님에게 송금해주세요`;
+        `${payerName}님에게 송금해주세요`;
 
       document.getElementById("payText").textContent =
         `${receiver.name}에게 ${amountText}원을 보내주세요.`;
@@ -686,191 +685,185 @@
 
       document.getElementById("tossLink").setAttribute(
         "href",
-        makeTossUrl(data.amount, receiver.bank, receiver.account, currentReason)
+        makeTossUrl(amount, receiver.bank, receiver.account, currentReason)
       );
+    } catch {
+      alert("송금 링크가 올바르지 않습니다.");
+    }
+  }
+
+  function makeLink() {
+    const payerName = document.getElementById("payerName").value.trim();
+    const receiverIndex = document.getElementById("receiverName").value;
+    const amountRaw = document.getElementById("amount").value.trim();
+    const reason = document.getElementById("reason").value.trim();
+
+    let amount = "";
+
+    try {
+      amount = normalizeAmount(amountRaw);
+    } catch {
+      alert("금액 수식을 확인해주세요.");
+      return;
     }
 
-    function makeLink() {
-      const payerName = document.getElementById("payerName").value.trim();
-      const receiverIndex = document.getElementById("receiverName").value;
-      const amountRaw = document.getElementById("amount").value.trim();
-      const reason = document.getElementById("reason").value.trim();
+    if (!payerName || !amount || Number(amount) <= 0) {
+      alert("보내는 사람 이름과 금액을 입력해주세요.");
+      return;
+    }
 
-      let amount = "";
+    amount = String(Math.round(Number(amount)));
+    document.getElementById("amount").value = amount;
+
+    const amountText = Number(amount).toLocaleString("ko-KR");
+    const receiver = people[Number(receiverIndex)];
+    const packed = [receiverIndex, amount, Date.now(), payerName, reason].join("|");
+
+    window.createdLink =
+      location.origin +
+      location.pathname +
+      "#p=" +
+      encodeData(packed);
+
+    window.shareTitle = `${payerName}님 ${amountText}원 송금 요청`;
+    window.shareText =
+      `${payerName}님에게 ${amountText}원 송금 요청이 도착했습니다. ` +
+      `받는 사람은 ${receiver.name}입니다.` +
+      (reason ? ` ${reason} 보내주세요.` : "");
+
+    const result = document.getElementById("result");
+    result.classList.remove("hidden");
+    result.innerHTML =
+      `<strong>${payerName}님 ${amountText}원 송금 요청</strong><br>` +
+      `${receiver.name}에게 보내는 링크가 만들어졌습니다.<br>` +
+      (reason ? `${escapeHtml(reason)} 보내주세요.<br>` : "") +
+      `이 링크는 24시간 후 만료됩니다.<br><br>` +
+      `${window.createdLink}`;
+
+    document.getElementById("shareActions").classList.remove("hidden");
+  }
+
+  function escapeHtml(text) {
+    return text
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  async function copyText(text, successMessage, silent = false) {
+    try {
+      await navigator.clipboard.writeText(text);
+
+      if (!silent) {
+        alert(successMessage);
+      }
+    } catch {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
 
       try {
-        amount = normalizeAmount(amountRaw);
-      } catch {
-        alert("금액 수식을 확인해주세요.");
-        return;
-      }
-
-      if (!payerName || !amount || Number(amount) <= 0) {
-        alert("보내는 사람 이름과 금액을 입력해주세요.");
-        return;
-      }
-
-      amount = String(Math.round(Number(amount)));
-      document.getElementById("amount").value = amount;
-
-      const amountText = Number(amount).toLocaleString("ko-KR");
-      const receiver = people[Number(receiverIndex)];
-
-      const token = saveCompressedLink({
-        receiverIndex,
-        amount,
-        createdAt: Date.now(),
-        payerName,
-        reason
-      });
-
-      window.createdLink =
-        location.origin +
-        location.pathname +
-        "?p=" +
-        encodeURIComponent(token);
-
-      window.shareTitle = `${payerName}님 ${amountText}원 송금 요청`;
-      window.shareText =
-        `${payerName}님에게 ${amountText}원 송금 요청이 도착했습니다. ` +
-        `받는 사람은 ${receiver.name}입니다.` +
-        (reason ? ` ${reason} 보내주세요.` : "");
-
-      const result = document.getElementById("result");
-      result.classList.remove("hidden");
-      result.innerHTML =
-        `<strong>${payerName}님 ${amountText}원 송금 요청</strong><br>` +
-        `${receiver.name}에게 보내는 링크가 만들어졌습니다.<br>` +
-        (reason ? `${escapeHtml(reason)} 보내주세요.<br>` : "") +
-        `이 링크는 24시간 후 만료됩니다.<br><br>` +
-        `${window.createdLink}`;
-
-      document.getElementById("shareActions").classList.remove("hidden");
-    }
-
-    function escapeHtml(text) {
-      return text
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
-    async function copyText(text, successMessage, silent = false) {
-      try {
-        await navigator.clipboard.writeText(text);
+        document.execCommand("copy");
 
         if (!silent) {
           alert(successMessage);
         }
       } catch {
-        const textarea = document.createElement("textarea");
-        textarea.value = text;
-        textarea.style.position = "fixed";
-        textarea.style.left = "-9999px";
-        document.body.appendChild(textarea);
-        textarea.focus();
-        textarea.select();
-
-        try {
-          document.execCommand("copy");
-
-          if (!silent) {
-            alert(successMessage);
-          }
-        } catch {
-          if (!silent) {
-            alert("복사가 안 되면 내용을 길게 눌러 직접 복사해주세요.");
-          }
+        if (!silent) {
+          alert("복사가 안 되면 내용을 길게 눌러 직접 복사해주세요.");
         }
-
-        textarea.remove();
       }
+
+      textarea.remove();
+    }
+  }
+
+  async function copyLink() {
+    if (!window.createdLink) {
+      alert("먼저 송금 링크를 만들어주세요.");
+      return;
     }
 
-    async function copyLink() {
-      if (!window.createdLink) {
-        alert("먼저 송금 링크를 만들어주세요.");
-        return;
-      }
+    await copyText(window.createdLink, "링크가 복사되었습니다.");
+  }
 
-      await copyText(window.createdLink, "링크가 복사되었습니다.");
+  async function copyAccount(silent = false) {
+    if (!currentReceiver) {
+      alert("계좌 정보를 불러오지 못했습니다.");
+      return;
     }
 
-    async function copyAccount(silent = false) {
-      if (!currentReceiver) {
-        alert("계좌 정보를 불러오지 못했습니다.");
-        return;
-      }
+    await copyText(currentReceiver.account, "계좌번호가 복사되었습니다.", silent);
+  }
 
-      await copyText(currentReceiver.account, "계좌번호가 복사되었습니다.", silent);
+  async function shareLink() {
+    if (!window.createdLink) {
+      alert("먼저 송금 링크를 만들어주세요.");
+      return;
     }
 
-    async function shareLink() {
-      if (!window.createdLink) {
-        alert("먼저 송금 링크를 만들어주세요.");
-        return;
-      }
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: window.shareTitle,
+          text: window.shareText,
+          url: window.createdLink
+        });
+      } catch {}
+    } else {
+      await copyLink();
+    }
+  }
 
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: window.shareTitle,
-            text: window.shareText,
-            url: window.createdLink
-          });
-        } catch {}
-      } else {
-        await copyLink();
-      }
+  function toggleMoreBanks() {
+    const moreBanks = document.getElementById("moreBanks");
+    moreBanks.classList.toggle("hidden");
+  }
+
+  function openBankApp(bankKey) {
+    if (!currentReceiver) {
+      alert("계좌 정보를 불러오지 못했습니다.");
+      return;
     }
 
-    function toggleMoreBanks() {
-      const moreBanks = document.getElementById("moreBanks");
-      moreBanks.classList.toggle("hidden");
-    }
+    const app = bankApps[bankKey];
+    if (!app) return;
 
-    function openBankApp(bankKey) {
-      if (!currentReceiver) {
-        alert("계좌 정보를 불러오지 못했습니다.");
-        return;
+    copyAccount(true);
+
+    let opened = false;
+
+    const onHidden = () => {
+      if (document.hidden) {
+        opened = true;
       }
+    };
 
-      const app = bankApps[bankKey];
-      if (!app) return;
+    document.addEventListener("visibilitychange", onHidden);
 
-      let opened = false;
-
-      const onHidden = () => {
-        if (document.hidden) {
-          opened = true;
-          copyAccount(true);
-        }
-      };
-
-      document.addEventListener("visibilitychange", onHidden);
-
-      app.schemes.forEach((scheme, index) => {
-        setTimeout(() => {
-          if (!opened) {
-            location.href = scheme;
-          }
-        }, index * 450);
-      });
-
+    app.schemes.forEach((scheme, index) => {
       setTimeout(() => {
-        document.removeEventListener("visibilitychange", onHidden);
-
         if (!opened) {
-          copyAccount(true);
-          alert(`${app.name} 앱을 열지 못했습니다. 계좌번호는 복사해두었습니다.`);
+          location.href = scheme;
         }
-      }, 2600);
-    }
+      }, index * 450);
+    });
 
-    setPerson("park");
-    openPaymentPage();
-  </script>
-</body>
-</html>
+    setTimeout(() => {
+      document.removeEventListener("visibilitychange", onHidden);
+
+      if (!opened) {
+        alert(`${app.name} 앱을 열지 못했습니다. 계좌번호는 복사해두었습니다.`);
+      }
+    }, 2600);
+  }
+
+  setPerson("park");
+  openPaymentPage();
+</script>
