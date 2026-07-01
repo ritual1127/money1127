@@ -1,4 +1,4 @@
-<!doctype html>
+<!doctype html> 
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
@@ -6,7 +6,7 @@
   <meta name="format-detection" content="telephone=no" />
   <meta name="robots" content="noindex,nofollow,noarchive,nosnippet" />
 
-  <title>송금 요청</title>
+  <title>돈 보내주세요</title>
 
   <meta property="og:title" content="송금 요청" />
   <meta property="og:description" content="송금 요청 링크입니다. 금액과 사유를 확인하고 송금해주세요." />
@@ -162,14 +162,27 @@
       box-shadow: 0 10px 24px rgba(37, 99, 235, 0.2);
     }
 
-    button:active,
+    button:disabled {
+      opacity: 0.65;
+      cursor: wait;
+    }
+
+    button:active:not(:disabled),
     a.button:active {
       transform: translateY(1px);
     }
 
     .mode-tabs,
-    .person-buttons {
+    .person-buttons,
+    .quick-amounts {
       display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin: 10px 0 8px;
+    }
+
+    .mode-tabs,
+    .person-buttons {
       grid-template-columns: 1fr 1fr;
       gap: 10px;
       margin: 18px 0 8px;
@@ -188,6 +201,20 @@
       background: #eaf3ff;
       color: #1d4ed8;
       border-color: #9fc8ff;
+    }
+
+    .quick-amounts button {
+      min-height: 42px;
+      font-size: 14px;
+      background: #f3f7fc;
+      color: #334155;
+      border: 1px solid #dde8f5;
+      box-shadow: none;
+    }
+
+    .quick-amounts button:active {
+      background: #eaf3ff;
+      color: #1d4ed8;
     }
 
     .primary {
@@ -226,8 +253,9 @@
     .more-box,
     .expired-box,
     .reason-box,
-    .ai-box,
-    .group-list {
+    .group-list,
+    .qr-box,
+    .countdown-box {
       background: #f8fbff;
       border: 1px solid #e3ecf6;
       border-radius: 18px;
@@ -237,29 +265,6 @@
       line-height: 1.65;
       font-size: 14px;
       word-break: break-word;
-    }
-
-    .ai-box {
-      background: #f7fbff;
-    }
-
-    .ai-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 8px;
-      color: #172033;
-      font-weight: 900;
-    }
-
-    .ai-button {
-      width: auto;
-      min-height: 36px;
-      padding: 0 12px;
-      border-radius: 12px;
-      font-size: 13px;
-      box-shadow: none;
     }
 
     .reason-box strong {
@@ -272,6 +277,43 @@
       background: #fff7ed;
       border-color: #fed7aa;
       color: #9a3412;
+      font-weight: 800;
+    }
+
+    .countdown-box {
+      background: #fffbeb;
+      border-color: #fde68a;
+      color: #92400e;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .countdown-box span {
+      color: #b45309;
+      font-size: 18px;
+    }
+
+    .qr-box {
+      text-align: center;
+    }
+
+    .qr-box img {
+      width: 160px;
+      height: 160px;
+      border-radius: 12px;
+      margin-top: 8px;
+      background: white;
+      padding: 8px;
+    }
+
+    .short-badge {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #166534;
+      font-size: 12px;
       font-weight: 800;
     }
 
@@ -381,6 +423,10 @@
       margin-top: 0;
     }
 
+    .group-toolbar {
+      margin-top: 12px;
+    }
+
     .footer {
       margin-top: 24px;
       text-align: center;
@@ -411,6 +457,10 @@
       .group-row {
         grid-template-columns: 1fr;
       }
+
+      .quick-amounts {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   </style>
 </head>
@@ -425,7 +475,7 @@
 
       <section id="maker">
         <h1>송금 링크 만들기</h1>
-        <p>개인 또는 단체 송금 요청 링크를 만들 수 있습니다.</p>
+        <p>개인 또는 단체 송금 요청 링크를 만들 수 있습니다. 링크는 자동으로 짧게 변환됩니다.</p>
 
         <div class="mode-tabs">
           <button id="singleModeBtn" class="active" onclick="setMode('single')">개인</button>
@@ -459,6 +509,12 @@
           <input id="payerName" placeholder="예: 김민수" />
 
           <label for="amount">받을 금액</label>
+          <div class="quick-amounts">
+            <button type="button" onclick="setQuickAmount(5000)">5천</button>
+            <button type="button" onclick="setQuickAmount(10000)">1만</button>
+            <button type="button" onclick="setQuickAmount(30000)">3만</button>
+            <button type="button" onclick="setQuickAmount(50000)">5만</button>
+          </div>
           <input id="amount" type="text" inputmode="text" placeholder="예: 15000 또는 10000+5000=" />
           <div class="hint">수식 끝에 = 를 붙이면 자동 계산됩니다.</div>
         </div>
@@ -472,15 +528,7 @@
         <label for="reason">송금 사유</label>
         <textarea id="reason" placeholder="예: 치킨"></textarea>
 
-        <div class="ai-box">
-          <div class="ai-title">
-            <span>자동문구</span>
-            <button class="ai-button" onclick="generateAiMessage()">생성</button>
-          </div>
-          <textarea id="aiMessage" placeholder="사유와 금액을 보고 자동으로 문구를 만들어줍니다."></textarea>
-        </div>
-
-        <button class="primary" onclick="makeLink()">링크 만들기</button>
+        <button id="makeLinkBtn" class="primary" onclick="makeLink()">링크 만들기</button>
 
         <div id="result" class="summary hidden"></div>
         <div id="groupResult" class="group-list hidden"></div>
@@ -489,11 +537,17 @@
           <button class="sub" onclick="copyLink()">링크 복사</button>
           <button onclick="shareLink()">공유하기</button>
         </div>
+        <button id="copyShareTextBtn" class="sub hidden" style="margin-top:10px" onclick="copyShareText()">카톡용 문구 복사</button>
+        <button id="copyAllGroupBtn" class="sub group-toolbar hidden" onclick="copyAllGroupLinks()">전체 링크 한번에 복사</button>
       </section>
 
       <section id="payer" class="hidden">
         <h1 id="payTitle">송금해주세요</h1>
         <p id="payText"></p>
+
+        <div id="countdownBox" class="countdown-box hidden">
+          이 링크는 <span id="countdownText">--:--:--</span> 후 만료됩니다
+        </div>
 
         <div class="amount-area">
           <div class="money" id="payAmount"></div>
@@ -501,8 +555,13 @@
         </div>
 
         <div id="payReasonBox" class="reason-box hidden">
-          <strong>요청 문구</strong>
+          <strong>송금 사유</strong>
           <span id="payReason"></span>
+        </div>
+
+        <div id="qrBox" class="qr-box hidden">
+          <div>QR 코드로 링크 공유</div>
+          <img id="qrImage" alt="송금 링크 QR 코드" />
         </div>
 
         <div class="account-box">
@@ -545,6 +604,7 @@
 
   <script>
     const EXPIRE_MS = 24 * 60 * 60 * 1000;
+    const ISGD_API = "https://is.gd/create.php";
 
     const people = [
       { name: "ritual", bank: "토스뱅크", account: "100257070784" },
@@ -564,12 +624,14 @@
     const payer = document.getElementById("payer");
     const expired = document.getElementById("expired");
     const amountInput = document.getElementById("amount");
+    const makeLinkBtn = document.getElementById("makeLinkBtn");
 
     let mode = "single";
     let currentReceiver = null;
     let currentAmount = "";
     let currentReason = "";
     let currentPayerName = "";
+    let countdownTimer = null;
 
     amountInput.addEventListener("input", () => maybeCalculateInput(amountInput));
 
@@ -580,12 +642,18 @@
       document.getElementById("singleFields").classList.toggle("hidden", mode !== "single");
       document.getElementById("groupFields").classList.toggle("hidden", mode !== "group");
       document.getElementById("shareActions").classList.add("hidden");
+      document.getElementById("copyShareTextBtn").classList.add("hidden");
+      document.getElementById("copyAllGroupBtn").classList.add("hidden");
       document.getElementById("result").classList.add("hidden");
       document.getElementById("groupResult").classList.add("hidden");
 
       if (mode === "group") {
         renderGroupRows();
       }
+    }
+
+    function setQuickAmount(value) {
+      amountInput.value = String(value);
     }
 
     function renderGroupRows() {
@@ -685,44 +753,90 @@
       return Number(amount).toLocaleString("ko-KR") + "원";
     }
 
-    function generateMessage(reason, amount, payerName = "") {
-      const cleanReason = (reason || "정산금").trim();
-      const amountText = amount ? formatWon(amount) : "정산금";
-      const namePart = payerName ? `${payerName}, ` : "";
-      const lowered = cleanReason.toLowerCase();
+    function shortenUrl(longUrl) {
+      return new Promise((resolve, reject) => {
+        const callbackName = "isgd_cb_" + Date.now() + "_" + Math.random().toString(36).slice(2);
+        const timeout = setTimeout(() => {
+          cleanup();
+          reject(new Error("단축 요청 시간이 초과되었습니다."));
+        }, 12000);
 
-      if (cleanReason.includes("치킨")) return `${namePart}어제 치킨 진짜 맛있었지. 치킨값 ${amountText} 빨리 보내줘`;
-      if (cleanReason.includes("밥") || cleanReason.includes("저녁") || cleanReason.includes("점심")) return `${namePart}${cleanReason} 맛있게 먹었으니까 ${amountText} 보내주세요`;
-      if (cleanReason.includes("택시") || cleanReason.includes("차비")) return `${namePart}그때 같이 탄 ${cleanReason} ${amountText} 보내주세요`;
-      if (cleanReason.includes("술") || cleanReason.includes("맥주") || cleanReason.includes("소주")) return `${namePart}즐거웠던 만큼 정산도 깔끔하게. ${cleanReason} ${amountText} 보내줘`;
-      if (cleanReason.includes("회비") || cleanReason.includes("모임")) return `${namePart}${cleanReason} ${amountText} 보내주세요. 정산 마감 전에 부탁드립니다`;
-      if (lowered.includes("netflix") || cleanReason.includes("넷플") || cleanReason.includes("구독")) return `${namePart}${cleanReason} 이번 달 몫 ${amountText} 보내주세요`;
-      return `${namePart}${cleanReason} ${amountText} 보내주세요`;
+        function cleanup() {
+          clearTimeout(timeout);
+          delete window[callbackName];
+          if (script.parentNode) script.remove();
+        }
+
+        window[callbackName] = (data) => {
+          cleanup();
+          if (data && data.shorturl) {
+            resolve(data.shorturl);
+          } else {
+            reject(new Error(data?.errormessage || "링크 단축에 실패했습니다."));
+          }
+        };
+
+        const script = document.createElement("script");
+        script.src = `${ISGD_API}?format=json&callback=${callbackName}&url=${encodeURIComponent(longUrl)}`;
+        script.onerror = () => {
+          cleanup();
+          reject(new Error("링크 단축 서버에 연결할 수 없습니다."));
+        };
+        document.head.appendChild(script);
+      });
     }
 
-    function generateAiMessage() {
-      const reason = document.getElementById("reason").value.trim();
-      const payerName = document.getElementById("payerName").value.trim();
-      let amount = "";
-
+    async function shortenWithFallback(longUrl) {
       try {
-        if (mode === "single") {
-          amount = normalizeAmount(document.getElementById("amount").value.trim());
-        } else {
-          const firstAmount = document.querySelector(".group-amount")?.value.trim() || "";
-          amount = normalizeAmount(firstAmount);
-        }
+        const shortUrl = await shortenUrl(longUrl);
+        return { url: shortUrl, shortened: true };
       } catch {
-        amount = "";
+        return { url: longUrl, shortened: false };
       }
-      document.getElementById("aiMessage").value = generateMessage(reason, amount, payerName);
+    }
+
+    function makeShareText(payerName, amount, reason, link) {
+      const amountText = formatWon(amount);
+      const reasonText = reason ? `\n사유: ${reason}` : "";
+      return `${payerName}님, ${amountText} 송금 부탁드려요.${reasonText}\n${link}`;
     }
 
     function makeTossUrl(amount, bank, account, reason) {
       return `supertoss://send?amount=${encodeURIComponent(amount)}&bank=${encodeURIComponent(bank)}&accountNo=${encodeURIComponent(account)}&memo=${encodeURIComponent(reason || "")}&origin=link`;
     }
 
+    function showQrCode(url) {
+      const qrBox = document.getElementById("qrBox");
+      const qrImage = document.getElementById("qrImage");
+      qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(url)}`;
+      qrBox.classList.remove("hidden");
+    }
+
+    function startCountdown(expiresAt) {
+      const box = document.getElementById("countdownBox");
+      const text = document.getElementById("countdownText");
+      box.classList.remove("hidden");
+
+      function tick() {
+        const remain = expiresAt - Date.now();
+        if (remain <= 0) {
+          clearInterval(countdownTimer);
+          showExpired();
+          return;
+        }
+        const h = Math.floor(remain / 3600000);
+        const m = Math.floor((remain % 3600000) / 60000);
+        const s = Math.floor((remain % 60000) / 1000);
+        text.textContent = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+      }
+
+      tick();
+      clearInterval(countdownTimer);
+      countdownTimer = setInterval(tick, 1000);
+    }
+
     function showExpired() {
+      clearInterval(countdownTimer);
       maker.classList.add("hidden");
       payer.classList.add("hidden");
       expired.classList.remove("hidden");
@@ -739,14 +853,15 @@
 
         if (!receiver || !data.amount || !data.createdAt || !data.payerName) return;
 
-        if (Date.now() - Number(data.createdAt) > EXPIRE_MS) {
+        const expiresAt = Number(data.createdAt) + EXPIRE_MS;
+        if (Date.now() > expiresAt) {
           showExpired();
           return;
         }
 
         currentReceiver = receiver;
         currentAmount = data.amount;
-        currentReason = data.message || data.reason || "";
+        currentReason = data.reason || "";
         currentPayerName = data.payerName;
 
         maker.classList.add("hidden");
@@ -754,7 +869,7 @@
 
         const amountText = formatWon(data.amount);
         document.title = `${data.payerName}님 ${amountText} 송금 요청`;
-        document.getElementById("payTitle").textContent = `${data.payerName}님,돈 보내주세요`;
+        document.getElementById("payTitle").textContent = `${data.payerName}님, 돈 보내주세요`;
         document.getElementById("payText").textContent = `${receiver.name}님에게 ${amountText}을 보내주세요.`;
         document.getElementById("payAmount").textContent = amountText;
         document.getElementById("fallbackAccount").textContent = `${receiver.bank} ${receiver.account}`;
@@ -765,14 +880,21 @@
         }
 
         document.getElementById("tossLink").setAttribute("href", makeTossUrl(data.amount, receiver.bank, receiver.account, currentReason));
+        showQrCode(location.href);
+        startCountdown(expiresAt);
       } catch {
         alert("송금 링크가 올바르지 않습니다.");
       }
     }
 
-    function makeLink() {
+    function setMakeLinkLoading(loading) {
+      makeLinkBtn.disabled = loading;
+      makeLinkBtn.textContent = loading ? "링크 단축 중..." : "링크 만들기";
+    }
+
+    async function makeLink() {
       if (mode === "group") {
-        makeGroupLinks();
+        await makeGroupLinks();
         return;
       }
 
@@ -780,7 +902,6 @@
       const receiverIndex = document.getElementById("receiverName").value;
       const amountRaw = document.getElementById("amount").value.trim();
       const reason = document.getElementById("reason").value.trim();
-      let message = document.getElementById("aiMessage").value.trim();
       let amount = "";
 
       try { amount = normalizeAmount(amountRaw); } catch { alert("금액 수식을 확인해주세요."); return; }
@@ -793,27 +914,34 @@
       amount = String(Math.round(Number(amount)));
       document.getElementById("amount").value = amount;
 
-      if (!message) {
-        message = generateMessage(reason, amount, payerName);
-        document.getElementById("aiMessage").value = message;
-      }
-
       const amountText = formatWon(amount);
       const receiver = people[Number(receiverIndex)];
+      const longLink = makePayLink({ receiverIndex, amount, createdAt: Date.now(), payerName, reason });
 
-      window.createdLink = makePayLink({ receiverIndex, amount, createdAt: Date.now(), payerName, reason, message });
+      setMakeLinkLoading(true);
+      const { url: finalLink, shortened } = await shortenWithFallback(longLink);
+      setMakeLinkLoading(false);
+
+      window.createdLink = finalLink;
       window.shareTitle = `${payerName}님 ${amountText} 송금 요청`;
-      window.shareText = message;
+      window.shareText = makeShareText(payerName, amount, reason, finalLink);
 
+      const badge = shortened ? '<span class="short-badge">짧은 링크</span>' : '<span class="short-badge" style="background:#fef3c7;color:#92400e">원본 링크</span>';
       const result = document.getElementById("result");
       result.classList.remove("hidden");
-      result.innerHTML = `<strong>${payerName}님 ${amountText} 송금 요청</strong><br>${receiver.name}에게 보내는 링크가 만들어졌습니다.<br>${escapeHtml(message)}<br><br>${window.createdLink}`;
+      result.innerHTML = `
+        <strong>${escapeHtml(payerName)}님 ${escapeHtml(amountText)} 송금 요청</strong><br>
+        ${escapeHtml(receiver.name)}에게 보내는 링크가 만들어졌습니다.${badge}<br><br>
+        ${escapeHtml(finalLink)}
+      `;
 
       document.getElementById("groupResult").classList.add("hidden");
       document.getElementById("shareActions").classList.remove("hidden");
+      document.getElementById("copyShareTextBtn").classList.remove("hidden");
+      document.getElementById("copyAllGroupBtn").classList.add("hidden");
     }
 
-    function makeGroupLinks() {
+    async function makeGroupLinks() {
       const receiverIndex = document.getElementById("receiverName").value;
       const reason = document.getElementById("reason").value.trim();
       const rows = Array.from(document.querySelectorAll(".group-row"));
@@ -833,9 +961,8 @@
         }
 
         amount = String(Math.round(Number(amount)));
-        const message = generateMessage(reason, amount, payerName);
-        const link = makePayLink({ receiverIndex, amount, createdAt: Date.now(), payerName, reason, message });
-        items.push({ payerName, amount, message, link });
+        const longLink = makePayLink({ receiverIndex, amount, createdAt: Date.now(), payerName, reason });
+        items.push({ payerName, amount, reason, longLink });
       }
 
       if (!items.length) {
@@ -843,17 +970,26 @@
         return;
       }
 
+      setMakeLinkLoading(true);
+      for (const item of items) {
+        const { url, shortened } = await shortenWithFallback(item.longLink);
+        item.link = url;
+        item.shortened = shortened;
+      }
+      setMakeLinkLoading(false);
+
       window.groupLinks = items;
       const groupResult = document.getElementById("groupResult");
       groupResult.classList.remove("hidden");
       groupResult.innerHTML = items.map((item, index) => `
         <div class="group-item">
           <strong>${escapeHtml(item.payerName)} · ${formatWon(item.amount)}</strong>
-          <div>${escapeHtml(item.message)}</div>
-          <div>${item.link}</div>
+          ${item.shortened ? '<span class="short-badge">짧은 링크</span>' : '<span class="short-badge" style="background:#fef3c7;color:#92400e">원본 링크</span>'}
+          <div>${escapeHtml(item.link)}</div>
           <div class="actions">
             <button class="sub group-copy" data-index="${index}">복사</button>
             <button class="group-share" data-index="${index}">공유</button>
+            <button class="sub group-text" data-index="${index}">문구 복사</button>
           </div>
         </div>
       `).join("");
@@ -868,12 +1004,21 @@
       groupResult.querySelectorAll(".group-share").forEach(button => {
         button.addEventListener("click", () => {
           const item = window.groupLinks[Number(button.dataset.index)];
-          shareSpecificLink(item.payerName, item.message, item.link);
+          shareSpecificLink(item.payerName, item.reason, item.amount, item.link);
+        });
+      });
+
+      groupResult.querySelectorAll(".group-text").forEach(button => {
+        button.addEventListener("click", () => {
+          const item = window.groupLinks[Number(button.dataset.index)];
+          copyText(makeShareText(item.payerName, item.amount, item.reason, item.link), "카톡용 문구가 복사되었습니다.");
         });
       });
 
       document.getElementById("result").classList.add("hidden");
       document.getElementById("shareActions").classList.add("hidden");
+      document.getElementById("copyShareTextBtn").classList.add("hidden");
+      document.getElementById("copyAllGroupBtn").classList.remove("hidden");
     }
 
     function makePayLink(data) {
@@ -915,6 +1060,19 @@
       await copyText(window.createdLink, "링크가 복사되었습니다.");
     }
 
+    async function copyShareText() {
+      if (!window.shareText) { alert("먼저 송금 링크를 만들어주세요."); return; }
+      await copyText(window.shareText, "카톡용 문구가 복사되었습니다.");
+    }
+
+    async function copyAllGroupLinks() {
+      if (!window.groupLinks?.length) { alert("복사할 링크가 없습니다."); return; }
+      const text = window.groupLinks.map(item =>
+        `${item.payerName} · ${formatWon(item.amount)}\n${makeShareText(item.payerName, item.amount, item.reason, item.link)}`
+      ).join("\n\n");
+      await copyText(text, "전체 링크와 문구가 복사되었습니다.");
+    }
+
     async function copySpecificLink(link) {
       await copyText(link, "링크가 복사되었습니다.");
     }
@@ -929,15 +1087,16 @@
       await sharePayload(window.shareTitle, window.shareText, window.createdLink);
     }
 
-    async function shareSpecificLink(payerName, message, link) {
-      await sharePayload(`${payerName}님 송금 요청`, message, link);
+    async function shareSpecificLink(payerName, reason, amount, link) {
+      const text = makeShareText(payerName, amount, reason, link);
+      await sharePayload(`${payerName}님 송금 요청`, text, link);
     }
 
     async function sharePayload(title, text, url) {
       if (navigator.share) {
         try { await navigator.share({ title, text, url }); } catch {}
       } else {
-        await copyText(url, "링크가 복사되었습니다.");
+        await copyText(text, "공유 문구가 복사되었습니다.");
       }
     }
 
