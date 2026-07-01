@@ -754,8 +754,8 @@
 
         const amountText = formatWon(data.amount);
         document.title = `${data.payerName}님 ${amountText} 송금 요청`;
-        document.getElementById("payTitle").textContent = `${data.payerName}님에게 송금해주세요`;
-        document.getElementById("payText").textContent = `${receiver.name}에게 ${amountText}을 보내주세요.`;
+        document.getElementById("payTitle").textContent = `${data.payerName}님,돈 보내주세요`;
+        document.getElementById("payText").textContent = `${receiver.name}님에게 ${amountText}을 보내주세요.`;
         document.getElementById("payAmount").textContent = amountText;
         document.getElementById("fallbackAccount").textContent = `${receiver.bank} ${receiver.account}`;
 
