@@ -1,20 +1,33 @@
-<!doctype html> 
+<!doctype html>
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="format-detection" content="telephone=no" />
-  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet" />
+  <meta name="robots" content="noindex, nofollow" />
 
-  <title>돈 보내주세요</title>
+  <title>송금 요청</title>
+  <link rel="canonical" href="https://www.naver1.cloud/" />
 
+  <meta property="og:site_name" content="간편 송금 요청" />
+  <meta property="og:locale" content="ko_KR" />
   <meta property="og:title" content="송금 요청" />
   <meta property="og:description" content="송금 요청 링크입니다. 금액과 사유를 확인하고 송금해주세요." />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.naver1.cloud/" />
+  <meta property="og:image" content="https://www.naver1.cloud/og-image-mobile.png" />
+  <meta property="og:image:secure_url" content="https://www.naver1.cloud/og-image-mobile.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="1200" />
+  <meta property="og:image:alt" content="송금 요청 미리보기" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="송금 요청" />
-  <meta name="twitter:description" content="송금 요청 링크입니다." />
+  <meta name="twitter:description" content="송금 요청 링크입니다. 금액과 사유를 확인하고 송금해주세요." />
+  <meta name="twitter:image" content="https://www.naver1.cloud/og-image-mobile.png" />
+
+  <link rel="image_src" href="https://www.naver1.cloud/og-image-mobile.png" />
 
   <style>
     * {
@@ -26,8 +39,6 @@
     html {
       width: 100%;
       min-height: 100%;
-      overflow-x: hidden;
-      overflow-y: auto;
       text-size-adjust: 100%;
       -webkit-text-size-adjust: 100%;
       background: #f4f7fb;
@@ -39,72 +50,69 @@
       min-height: 100%;
       margin: 0;
       overflow-x: hidden;
-      overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      background:
-        radial-gradient(circle at top left, rgba(76, 154, 255, 0.16), transparent 34%),
-        linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
+      background: linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
       color: #172033;
     }
 
     .page {
       width: 100%;
       min-height: 100dvh;
-      padding: max(18px, env(safe-area-inset-top)) 14px max(22px, env(safe-area-inset-bottom));
+      padding: max(16px, env(safe-area-inset-top)) 14px max(12px, env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .wrap {
-      width: min(100%, 430px);
+      width: min(100%, 420px);
       margin: 0 auto;
-      background: rgba(255, 255, 255, 0.94);
-      border: 1px solid rgba(214, 225, 238, 0.9);
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 18px 50px rgba(49, 72, 105, 0.12);
-      backdrop-filter: blur(12px);
+      background: #fff;
+      border: 1px solid #e3ecf6;
+      border-radius: 20px;
+      padding: 22px 20px;
+      box-shadow: 0 8px 28px rgba(49, 72, 105, 0.08);
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       color: #2563eb;
-      font-weight: 900;
-      font-size: 15px;
+      font-weight: 800;
+      font-size: 14px;
     }
 
     .logo {
-      width: 36px;
-      height: 36px;
-      border-radius: 14px;
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
       background: linear-gradient(135deg, #2563eb, #60a5fa);
-      color: white;
+      color: #fff;
       display: grid;
       place-items: center;
-      font-weight: 950;
-      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.22);
+      font-weight: 900;
     }
 
     h1 {
-      margin: 0 0 9px;
-      font-size: 25px;
-      line-height: 1.25;
-      letter-spacing: 0;
+      margin: 0 0 6px;
+      font-size: 23px;
+      line-height: 1.3;
     }
 
     p {
-      margin: 0 0 18px;
+      margin: 0 0 14px;
       color: #64748b;
-      line-height: 1.58;
-      font-size: 15px;
+      line-height: 1.5;
+      font-size: 14px;
     }
 
     label {
       display: block;
-      margin: 15px 0 7px;
-      font-weight: 850;
-      font-size: 14px;
+      margin: 12px 0 6px;
+      font-weight: 700;
+      font-size: 13px;
       color: #334155;
     }
 
@@ -113,8 +121,8 @@
     textarea {
       width: 100%;
       border: 1px solid #dce6f2;
-      border-radius: 16px;
-      padding: 0 15px;
+      border-radius: 14px;
+      padding: 0 14px;
       font-size: 16px;
       outline: none;
       background: #fbfdff;
@@ -123,153 +131,181 @@
 
     input,
     select {
-      height: 52px;
+      height: 48px;
     }
 
     textarea {
-      height: 52px;
-      min-height: 52px;
-      max-height: 96px;
-      padding-top: 13px;
+      height: 48px;
+      min-height: 48px;
+      max-height: 88px;
+      padding-top: 12px;
       resize: vertical;
-      line-height: 1.5;
+      line-height: 1.45;
     }
 
     input:focus,
     select:focus,
     textarea:focus {
       border-color: #7fb1ff;
-      box-shadow: 0 0 0 4px rgba(76, 154, 255, 0.15);
-      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(76, 154, 255, 0.14);
+      background: #fff;
     }
 
     button,
     a.button {
       width: 100%;
-      min-height: 54px;
+      min-height: 50px;
       border: 0;
-      border-radius: 16px;
+      border-radius: 14px;
       background: linear-gradient(135deg, #2563eb, #3b82f6);
-      color: white;
-      font-size: 16px;
-      font-weight: 900;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
       cursor: pointer;
       display: grid;
       place-items: center;
       text-decoration: none;
-      padding: 0 15px;
+      padding: 0 14px;
       text-align: center;
-      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.2);
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.18);
     }
 
-    button:disabled {
-      opacity: 0.65;
-      cursor: wait;
-    }
-
-    button:active:not(:disabled),
+    button:active,
     a.button:active {
       transform: translateY(1px);
     }
 
-    .mode-tabs,
-    .person-buttons,
-    .quick-amounts {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin: 10px 0 8px;
+    .mode-tabs {
+      display: inline-flex;
+      gap: 6px;
+      padding: 3px;
+      margin: 0 0 12px;
+      border-radius: 12px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
     }
 
-    .mode-tabs,
-    .person-buttons {
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin: 18px 0 8px;
-    }
-
-    .mode-tabs button,
-    .person-buttons button {
-      background: #f3f7fc;
-      color: #334155;
-      border: 1px solid #dde8f5;
+    .mode-tabs button {
+      width: auto;
+      min-height: 30px;
+      min-width: 58px;
+      padding: 0 12px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 9px;
+      background: transparent;
+      color: #64748b;
+      border: 0;
       box-shadow: none;
     }
 
-    .mode-tabs button.active,
-    .person-buttons button.active {
-      background: #eaf3ff;
+    .mode-tabs button.active {
+      background: #fff;
       color: #1d4ed8;
-      border-color: #9fc8ff;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
+    }
+
+    .person-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 0 0 10px;
+    }
+
+    .quick-amounts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 4px 0 8px;
+    }
+
+    .person-buttons button {
+      min-height: 38px;
+      font-size: 13px;
+      font-weight: 700;
+      background: #f8fafc;
+      color: #334155;
+      border: 1px solid #e2e8f0;
+      box-shadow: none;
     }
 
     .quick-amounts button {
-      min-height: 42px;
-      font-size: 14px;
-      background: #f3f7fc;
-      color: #334155;
-      border: 1px solid #dde8f5;
+      width: auto;
+      min-height: 28px;
+      padding: 0 10px;
+      font-size: 11px;
+      font-weight: 700;
+      background: #f8fafc;
+      color: #475569;
+      border: 1px solid #e2e8f0;
       box-shadow: none;
+      border-radius: 999px;
     }
 
+    .person-buttons button.active,
     .quick-amounts button:active {
-      background: #eaf3ff;
+      background: #eff6ff;
       color: #1d4ed8;
+      border-color: #bfdbfe;
     }
 
     .primary {
-      margin-top: 18px;
+      margin-top: 14px;
     }
 
     .sub {
-      background: #f7faff;
+      background: #f8fafc;
       color: #1e293b;
-      border: 1px solid #dbe6f3;
+      border: 1px solid #e2e8f0;
       box-shadow: none;
     }
 
     .actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 12px;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    #payer h1 {
+      margin-bottom: 2px;
+    }
+
+    #payer > p {
+      margin-bottom: 6px;
+      line-height: 1.4;
     }
 
     .amount-area {
-      margin: 24px 0 18px;
-      padding: 16px 0;
+      margin: 4px 0 12px;
+      padding: 0;
+      text-align: center;
     }
 
     .money {
-      font-size: 43px;
-      font-weight: 950;
-      margin: 20px 0 6px;
-      letter-spacing: 0;
+      font-size: 36px;
+      font-weight: 900;
+      margin: 0 0 10px;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
       word-break: break-word;
     }
 
-    .summary,
-    .account-box,
-    .more-box,
-    .expired-box,
-    .reason-box,
-    .group-list,
-    .qr-box,
-    .countdown-box {
+    .panel {
       background: #f8fbff;
       border: 1px solid #e3ecf6;
-      border-radius: 18px;
-      padding: 15px;
-      margin-top: 16px;
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-top: 12px;
       color: #475569;
-      line-height: 1.65;
+      line-height: 1.55;
       font-size: 14px;
       word-break: break-word;
     }
 
     .reason-box strong {
       display: block;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
       color: #172033;
     }
 
@@ -277,136 +313,90 @@
       background: #fff7ed;
       border-color: #fed7aa;
       color: #9a3412;
-      font-weight: 800;
-    }
-
-    .countdown-box {
-      background: #fffbeb;
-      border-color: #fde68a;
-      color: #92400e;
-      font-weight: 800;
-      text-align: center;
-    }
-
-    .countdown-box span {
-      color: #b45309;
-      font-size: 18px;
-    }
-
-    .qr-box {
-      text-align: center;
-    }
-
-    .qr-box img {
-      width: 160px;
-      height: 160px;
-      border-radius: 12px;
-      margin-top: 8px;
-      background: white;
-      padding: 8px;
-    }
-
-    .short-badge {
-      display: inline-block;
-      margin-top: 8px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: #dcfce7;
-      color: #166534;
-      font-size: 12px;
-      font-weight: 800;
+      font-weight: 700;
     }
 
     .account-row {
       display: grid;
       grid-template-columns: 1fr auto;
       align-items: center;
-      gap: 10px;
-      margin-top: 8px;
+      gap: 8px;
     }
 
     .account-row strong {
       color: #111827;
-      font-size: 16px;
+      font-size: 15px;
     }
 
     .mini-button {
       width: auto;
-      min-height: 40px;
-      border-radius: 13px;
-      padding: 0 14px;
-      font-size: 13px;
-      background: #eef5ff;
+      min-height: 36px;
+      border-radius: 10px;
+      padding: 0 12px;
+      font-size: 12px;
+      background: #eff6ff;
       color: #1d4ed8;
-      border: 1px solid #c7dcff;
+      border: 1px solid #bfdbfe;
       white-space: nowrap;
       box-shadow: none;
     }
 
-    .safe {
-      margin-top: 14px;
-      font-size: 13px;
-      color: #64748b;
-      line-height: 1.5;
-    }
-
     .more-toggle {
-      margin-top: 12px;
-      background: #ffffff;
+      margin-top: 10px;
+      background: #fff;
       color: #1e293b;
-      border: 1px solid #dbe6f3;
+      border: 1px solid #e2e8f0;
       box-shadow: none;
     }
 
     .bank-grid {
       display: grid;
-      gap: 10px;
-      margin-top: 12px;
+      gap: 8px;
+      margin-top: 8px;
     }
 
     .bank-button {
-      min-height: 62px;
-      background: #ffffff;
+      min-height: 50px;
+      background: #fff;
       color: #111827;
-      border: 1px solid #dbe6f3;
+      border: 1px solid #e2e8f0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      font-size: 16px;
-      font-weight: 900;
-      box-shadow: 0 8px 20px rgba(49, 72, 105, 0.07);
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 800;
+      box-shadow: none;
     }
 
     .bank-button span {
       color: #2563eb;
-      font-size: 13px;
-      font-weight: 850;
+      font-size: 12px;
+      font-weight: 700;
     }
 
     .hint {
-      margin-top: 7px;
-      color: #7c8ca3;
-      font-size: 12px;
-      line-height: 1.45;
+      margin-top: 5px;
+      color: #94a3b8;
+      font-size: 11px;
+      line-height: 1.4;
     }
 
     .group-row {
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
       gap: 8px;
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
     .group-row input {
-      height: 48px;
-      border-radius: 14px;
+      height: 44px;
     }
 
     .group-item {
       display: grid;
-      gap: 8px;
-      padding: 12px 0;
+      gap: 6px;
+      padding: 10px 0;
       border-top: 1px solid #e3ecf6;
     }
 
@@ -424,15 +414,67 @@
     }
 
     .group-toolbar {
-      margin-top: 12px;
+      margin-top: 8px;
     }
 
-    .footer {
-      margin-top: 24px;
+    .countdown-mini {
+      margin-top: 12px;
       text-align: center;
       font-size: 11px;
       color: #94a3b8;
-      letter-spacing: 0.2px;
+    }
+
+    .site-footer {
+      width: min(100%, 420px);
+      margin-top: auto;
+      padding: 16px 6px 4px;
+      text-align: center;
+      font-size: 10px;
+      line-height: 1.65;
+      color: rgba(15, 23, 42, 0.38);
+    }
+
+    .site-footer a {
+      color: rgba(15, 23, 42, 0.45);
+      text-decoration: none;
+    }
+
+    .site-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .site-footer .sep {
+      margin: 0 4px;
+      opacity: 0.45;
+    }
+
+    .footer-credit {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: max(20px, env(safe-area-inset-bottom));
+      transform: translateX(-50%) translateY(16px);
+      padding: 9px 16px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+      z-index: 99;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
 
     .hidden {
@@ -441,25 +483,20 @@
 
     @media (max-width: 360px) {
       .wrap {
-        padding: 20px;
-        border-radius: 20px;
+        padding: 18px 16px;
       }
 
       h1 {
-        font-size: 23px;
+        font-size: 21px;
       }
 
       .money {
-        font-size: 36px;
+        font-size: 32px;
       }
 
       .actions,
       .group-row {
         grid-template-columns: 1fr;
-      }
-
-      .quick-amounts {
-        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
@@ -475,7 +512,7 @@
 
       <section id="maker">
         <h1>송금 링크 만들기</h1>
-        <p>개인 또는 단체 송금 요청 링크를 만들 수 있습니다. 링크는 자동으로 짧게 변환됩니다.</p>
+        <p>개인 또는 단체 송금 요청 링크를 만들 수 있습니다.</p>
 
         <div class="mode-tabs">
           <button id="singleModeBtn" class="active" onclick="setMode('single')">개인</button>
@@ -510,13 +547,13 @@
 
           <label for="amount">받을 금액</label>
           <div class="quick-amounts">
-            <button type="button" onclick="setQuickAmount(5000)">5천</button>
-            <button type="button" onclick="setQuickAmount(10000)">1만</button>
-            <button type="button" onclick="setQuickAmount(30000)">3만</button>
-            <button type="button" onclick="setQuickAmount(50000)">5만</button>
+            <button type="button" onclick="addQuickAmount(1000)">천원</button>
+            <button type="button" onclick="addQuickAmount(5000)">오천원</button>
+            <button type="button" onclick="addQuickAmount(10000)">만원</button>
+            <button type="button" onclick="addQuickAmount(50000)">5만원</button>
           </div>
           <input id="amount" type="text" inputmode="text" placeholder="예: 15000 또는 10000+5000=" />
-          <div class="hint">수식 끝에 = 를 붙이면 자동 계산됩니다.</div>
+          <div class="hint">금액 버튼은 누를 때마다 더해집니다. 수식 끝에 = 를 붙이면 자동 계산됩니다.</div>
         </div>
 
         <div id="groupFields" class="hidden">
@@ -528,54 +565,42 @@
         <label for="reason">송금 사유</label>
         <textarea id="reason" placeholder="예: 치킨"></textarea>
 
-        <button id="makeLinkBtn" class="primary" onclick="makeLink()">링크 만들기</button>
+        <button class="primary" onclick="makeLink()">링크 만들기</button>
 
-        <div id="result" class="summary hidden"></div>
-        <div id="groupResult" class="group-list hidden"></div>
+        <div id="result" class="panel hidden"></div>
+        <div id="groupResult" class="panel hidden"></div>
 
         <div id="shareActions" class="actions hidden">
-          <button class="sub" onclick="copyLink()">링크 복사</button>
+          <button class="sub" onclick="copyLink()">복사</button>
           <button onclick="shareLink()">공유하기</button>
         </div>
-        <button id="copyShareTextBtn" class="sub hidden" style="margin-top:10px" onclick="copyShareText()">카톡용 문구 복사</button>
-        <button id="copyAllGroupBtn" class="sub group-toolbar hidden" onclick="copyAllGroupLinks()">전체 링크 한번에 복사</button>
+        <button id="copyAllGroupBtn" class="sub group-toolbar hidden" onclick="copyAllGroupLinks()">전체 한번에 복사</button>
       </section>
 
       <section id="payer" class="hidden">
         <h1 id="payTitle">송금해주세요</h1>
         <p id="payText"></p>
 
-        <div id="countdownBox" class="countdown-box hidden">
-          이 링크는 <span id="countdownText">--:--:--</span> 후 만료됩니다
-        </div>
-
         <div class="amount-area">
           <div class="money" id="payAmount"></div>
           <a id="tossLink" class="button primary" href="#" target="_self">토스로 바로 송금</a>
         </div>
 
-        <div id="payReasonBox" class="reason-box hidden">
+        <div id="payReasonBox" class="panel reason-box hidden">
           <strong>송금 사유</strong>
           <span id="payReason"></span>
         </div>
 
-        <div id="qrBox" class="qr-box hidden">
-          <div>QR 코드로 링크 공유</div>
-          <img id="qrImage" alt="송금 링크 QR 코드" />
-        </div>
-
-        <div class="account-box">
-          토스 앱이 열리지 않으면 아래 계좌로 송금해주세요.
+        <div class="panel account-box">
           <div class="account-row">
             <strong id="fallbackAccount"></strong>
             <button class="mini-button" onclick="copyAccount()">복사</button>
           </div>
         </div>
 
-        <button class="more-toggle" onclick="toggleMoreBanks()">더보기</button>
+        <button class="more-toggle" onclick="toggleMoreBanks()">다른 은행으로 송금</button>
 
-        <div id="moreBanks" class="more-box hidden">
-          원하는 은행 앱을 열면 계좌번호가 자동으로 복사됩니다.
+        <div id="moreBanks" class="panel hidden">
           <div class="bank-grid">
             <button class="bank-button" onclick="openBankApp('kakao')">카카오뱅크 <span>앱 열기</span></button>
             <button class="bank-button" onclick="openBankApp('nh')">농협은행 <span>앱 열기</span></button>
@@ -586,25 +611,35 @@
           </div>
         </div>
 
-        <div class="safe">
-          금액과 받는 사람 정보를 확인하고 송금해주세요. 이 링크는 생성 후 24시간 동안만 열립니다.
-        </div>
+        <div id="countdownMini" class="countdown-mini hidden"></div>
       </section>
 
       <section id="expired" class="hidden">
         <h1>만료된 링크입니다</h1>
-        <div class="expired-box">
+        <div class="panel expired-box">
           이 송금 요청 링크는 생성 후 24시간이 지나 만료되었습니다.
         </div>
       </section>
 
-      <div class="footer">made by ritual</div>
+      <div class="footer-credit">made by ritual</div>
     </main>
+
+    <footer class="site-footer">
+      <a href="https://www.naver1.cloud/terms.html">이용약관</a>
+      <span class="sep">|</span>
+      <a href="https://www.naver1.cloud/privacy.html">개인정보처리방침</a>
+      <span class="sep">|</span>
+      <a href="https://www.naver1.cloud/disclaimer.html">면책조항</a>
+      <span class="sep">|</span>
+      Copyright © 2026 <a href="https://www.naver1.cloud/">naver1.cloud</a>
+    </footer>
   </div>
+
+  <div id="toast" class="toast"></div>
 
   <script>
     const EXPIRE_MS = 24 * 60 * 60 * 1000;
-    const ISGD_API = "https://is.gd/create.php";
+    const SITE = "https://www.naver1.cloud";
 
     const people = [
       { name: "ritual", bank: "토스뱅크", account: "100257070784" },
@@ -624,16 +659,21 @@
     const payer = document.getElementById("payer");
     const expired = document.getElementById("expired");
     const amountInput = document.getElementById("amount");
-    const makeLinkBtn = document.getElementById("makeLinkBtn");
 
     let mode = "single";
     let currentReceiver = null;
-    let currentAmount = "";
-    let currentReason = "";
-    let currentPayerName = "";
     let countdownTimer = null;
+    let toastTimer = null;
 
     amountInput.addEventListener("input", () => maybeCalculateInput(amountInput));
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 1800);
+    }
 
     function setMode(nextMode) {
       mode = nextMode;
@@ -642,18 +682,15 @@
       document.getElementById("singleFields").classList.toggle("hidden", mode !== "single");
       document.getElementById("groupFields").classList.toggle("hidden", mode !== "group");
       document.getElementById("shareActions").classList.add("hidden");
-      document.getElementById("copyShareTextBtn").classList.add("hidden");
       document.getElementById("copyAllGroupBtn").classList.add("hidden");
       document.getElementById("result").classList.add("hidden");
       document.getElementById("groupResult").classList.add("hidden");
-
-      if (mode === "group") {
-        renderGroupRows();
-      }
+      if (mode === "group") renderGroupRows();
     }
 
-    function setQuickAmount(value) {
-      amountInput.value = String(value);
+    function addQuickAmount(value) {
+      const current = Number(amountInput.value.replaceAll(",", "").replace(/[^0-9]/g, "")) || 0;
+      amountInput.value = String(current + value);
     }
 
     function renderGroupRows() {
@@ -695,39 +732,120 @@
     }
 
     function calculateExpression(expression) {
-      if (!/^[0-9+\-*/().\s]+$/.test(expression)) {
-        throw new Error("invalid expression");
-      }
+      if (!/^[0-9+\-*/().\s]+$/.test(expression)) throw new Error("invalid");
       return Function('"use strict"; return (' + expression + ')')();
     }
 
     function normalizeAmount(value) {
       const clean = value.replaceAll(",", "").trim();
-      if (clean.endsWith("=")) {
-        return String(Math.round(calculateExpression(clean.slice(0, -1))));
-      }
+      if (clean.endsWith("=")) return String(Math.round(calculateExpression(clean.slice(0, -1))));
       if (/^[0-9+\-*/().\s]+$/.test(clean) && /[+\-*/]/.test(clean)) {
         return String(Math.round(calculateExpression(clean)));
       }
       return clean;
     }
 
-    function encodeData(text) {
-      const bytes = new TextEncoder().encode(text);
+    function encodeBytes(bytes) {
       let binary = "";
       bytes.forEach(byte => { binary += String.fromCharCode(byte); });
       return btoa(binary).replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
     }
 
-    function decodeData(text) {
+    function decodeBytes(text) {
       text = text.replaceAll("-", "+").replaceAll("_", "/");
-      while (text.length % 4) { text += "="; }
+      while (text.length % 4) text += "=";
       const binary = atob(text);
       const bytes = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i++) {
-        bytes[i] = binary.charCodeAt(i);
+      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+      return bytes;
+    }
+
+    function encodeData(text) {
+      return encodeBytes(new TextEncoder().encode(text));
+    }
+
+    function decodeData(text) {
+      return new TextDecoder().decode(decodeBytes(text));
+    }
+
+    function packBinary(data) {
+      const nameBytes = new TextEncoder().encode(data.payerName);
+      const reasonBytes = data.reason ? new TextEncoder().encode(data.reason) : null;
+      if (nameBytes.length > 255 || (reasonBytes && reasonBytes.length > 255)) {
+        throw new Error("too long");
       }
-      return new TextDecoder().decode(bytes);
+
+      const size = 10 + nameBytes.length + (reasonBytes ? 1 + reasonBytes.length : 0);
+      const buf = new Uint8Array(size);
+      const view = new DataView(buf.buffer);
+      let offset = 0;
+
+      view.setUint8(offset++, Number(data.receiverIndex) | (reasonBytes ? 4 : 0));
+      view.setUint32(offset, Number(data.amount), false);
+      offset += 4;
+      view.setUint32(offset, Math.floor(Number(data.createdAt) / 1000), false);
+      offset += 4;
+      view.setUint8(offset++, nameBytes.length);
+      buf.set(nameBytes, offset);
+      offset += nameBytes.length;
+
+      if (reasonBytes) {
+        view.setUint8(offset++, reasonBytes.length);
+        buf.set(reasonBytes, offset);
+      }
+
+      return buf;
+    }
+
+    function unpackBinary(bytes) {
+      const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+      let offset = 0;
+      const flags = view.getUint8(offset++);
+      const receiverIndex = flags & 3;
+      const hasReason = (flags & 4) !== 0;
+      const amount = view.getUint32(offset, false);
+      offset += 4;
+      const createdAt = view.getUint32(offset, false) * 1000;
+      offset += 4;
+      const nameLen = view.getUint8(offset++);
+      const payerName = new TextDecoder().decode(bytes.slice(offset, offset + nameLen));
+      offset += nameLen;
+
+      let reason = "";
+      if (hasReason) {
+        const reasonLen = view.getUint8(offset++);
+        reason = new TextDecoder().decode(bytes.slice(offset, offset + reasonLen));
+      }
+
+      return { receiverIndex, amount, createdAt, payerName, reason };
+    }
+
+    function normalizeLegacyObject(raw) {
+      if (raw.r !== undefined) {
+        return {
+          receiverIndex: raw.r,
+          amount: raw.a,
+          createdAt: raw.t * 1000,
+          payerName: raw.n,
+          reason: raw.s || ""
+        };
+      }
+      return raw;
+    }
+
+    function unpackPayload(token) {
+      if (typeof token !== "string") return normalizeLegacyObject(token);
+
+      const bytes = decodeBytes(token);
+      if (bytes[0] === 123) {
+        return normalizeLegacyObject(JSON.parse(new TextDecoder().decode(bytes)));
+      }
+
+      try {
+        return unpackBinary(bytes);
+      } catch {
+        return normalizeLegacyObject(JSON.parse(decodeData(token)));
+      }
     }
 
     function setPerson(person) {
@@ -753,48 +871,6 @@
       return Number(amount).toLocaleString("ko-KR") + "원";
     }
 
-    function shortenUrl(longUrl) {
-      return new Promise((resolve, reject) => {
-        const callbackName = "isgd_cb_" + Date.now() + "_" + Math.random().toString(36).slice(2);
-        const timeout = setTimeout(() => {
-          cleanup();
-          reject(new Error("단축 요청 시간이 초과되었습니다."));
-        }, 12000);
-
-        function cleanup() {
-          clearTimeout(timeout);
-          delete window[callbackName];
-          if (script.parentNode) script.remove();
-        }
-
-        window[callbackName] = (data) => {
-          cleanup();
-          if (data && data.shorturl) {
-            resolve(data.shorturl);
-          } else {
-            reject(new Error(data?.errormessage || "링크 단축에 실패했습니다."));
-          }
-        };
-
-        const script = document.createElement("script");
-        script.src = `${ISGD_API}?format=json&callback=${callbackName}&url=${encodeURIComponent(longUrl)}`;
-        script.onerror = () => {
-          cleanup();
-          reject(new Error("링크 단축 서버에 연결할 수 없습니다."));
-        };
-        document.head.appendChild(script);
-      });
-    }
-
-    async function shortenWithFallback(longUrl) {
-      try {
-        const shortUrl = await shortenUrl(longUrl);
-        return { url: shortUrl, shortened: true };
-      } catch {
-        return { url: longUrl, shortened: false };
-      }
-    }
-
     function makeShareText(payerName, amount, reason, link) {
       const amountText = formatWon(amount);
       const reasonText = reason ? `\n사유: ${reason}` : "";
@@ -805,17 +881,20 @@
       return `supertoss://send?amount=${encodeURIComponent(amount)}&bank=${encodeURIComponent(bank)}&accountNo=${encodeURIComponent(account)}&memo=${encodeURIComponent(reason || "")}&origin=link`;
     }
 
-    function showQrCode(url) {
-      const qrBox = document.getElementById("qrBox");
-      const qrImage = document.getElementById("qrImage");
-      qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(url)}`;
-      qrBox.classList.remove("hidden");
+    function makePayLink(data) {
+      const token = encodeBytes(packBinary(data));
+      return SITE + "/#" + token;
+    }
+
+    function parseHashToken() {
+      const hash = location.hash.replace(/^#/, "").trim();
+      if (!hash) return "";
+      return hash.replace(/^p=/, "");
     }
 
     function startCountdown(expiresAt) {
-      const box = document.getElementById("countdownBox");
-      const text = document.getElementById("countdownText");
-      box.classList.remove("hidden");
+      const el = document.getElementById("countdownMini");
+      el.classList.remove("hidden");
 
       function tick() {
         const remain = expiresAt - Date.now();
@@ -827,7 +906,7 @@
         const h = Math.floor(remain / 3600000);
         const m = Math.floor((remain % 3600000) / 60000);
         const s = Math.floor((remain % 60000) / 1000);
-        text.textContent = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+        el.textContent = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")} 후 만료`;
       }
 
       tick();
@@ -844,11 +923,11 @@
     }
 
     function openPaymentPage() {
-      const hash = location.hash.replace("#p=", "").replace("#", "");
-      if (!hash) return;
+      const token = parseHashToken();
+      if (!token) return;
 
       try {
-        const data = JSON.parse(decodeData(hash));
+        const data = unpackPayload(token);
         const receiver = people[Number(data.receiverIndex)];
 
         if (!receiver || !data.amount || !data.createdAt || !data.payerName) return;
@@ -860,41 +939,34 @@
         }
 
         currentReceiver = receiver;
-        currentAmount = data.amount;
-        currentReason = data.reason || "";
-        currentPayerName = data.payerName;
-
         maker.classList.add("hidden");
         payer.classList.remove("hidden");
 
         const amountText = formatWon(data.amount);
         document.title = `${data.payerName}님 ${amountText} 송금 요청`;
         document.getElementById("payTitle").textContent = `${data.payerName}님, 돈 보내주세요`;
-        document.getElementById("payText").textContent = `${receiver.name}님에게 ${amountText}을 보내주세요.`;
+        document.getElementById("payText").textContent = `${receiver.name}님에게 ${amountText} 보내주세요.`;
         document.getElementById("payAmount").textContent = amountText;
         document.getElementById("fallbackAccount").textContent = `${receiver.bank} ${receiver.account}`;
 
-        if (currentReason) {
+        if (data.reason) {
           document.getElementById("payReasonBox").classList.remove("hidden");
-          document.getElementById("payReason").textContent = currentReason;
+          document.getElementById("payReason").textContent = data.reason;
         }
 
-        document.getElementById("tossLink").setAttribute("href", makeTossUrl(data.amount, receiver.bank, receiver.account, currentReason));
-        showQrCode(location.href);
+        document.getElementById("tossLink").setAttribute(
+          "href",
+          makeTossUrl(data.amount, receiver.bank, receiver.account, data.reason)
+        );
         startCountdown(expiresAt);
       } catch {
         alert("송금 링크가 올바르지 않습니다.");
       }
     }
 
-    function setMakeLinkLoading(loading) {
-      makeLinkBtn.disabled = loading;
-      makeLinkBtn.textContent = loading ? "링크 단축 중..." : "링크 만들기";
-    }
-
-    async function makeLink() {
+    function makeLink() {
       if (mode === "group") {
-        await makeGroupLinks();
+        makeGroupLinks();
         return;
       }
 
@@ -916,32 +988,26 @@
 
       const amountText = formatWon(amount);
       const receiver = people[Number(receiverIndex)];
-      const longLink = makePayLink({ receiverIndex, amount, createdAt: Date.now(), payerName, reason });
+      const link = makePayLink({ receiverIndex, amount, createdAt: Date.now(), payerName, reason });
 
-      setMakeLinkLoading(true);
-      const { url: finalLink, shortened } = await shortenWithFallback(longLink);
-      setMakeLinkLoading(false);
-
-      window.createdLink = finalLink;
+      window.createdLink = link;
       window.shareTitle = `${payerName}님 ${amountText} 송금 요청`;
-      window.shareText = makeShareText(payerName, amount, reason, finalLink);
+      window.shareText = makeShareText(payerName, amount, reason, link);
 
-      const badge = shortened ? '<span class="short-badge">짧은 링크</span>' : '<span class="short-badge" style="background:#fef3c7;color:#92400e">원본 링크</span>';
       const result = document.getElementById("result");
       result.classList.remove("hidden");
       result.innerHTML = `
         <strong>${escapeHtml(payerName)}님 ${escapeHtml(amountText)} 송금 요청</strong><br>
-        ${escapeHtml(receiver.name)}에게 보내는 링크가 만들어졌습니다.${badge}<br><br>
-        ${escapeHtml(finalLink)}
+        ${escapeHtml(receiver.name)}에게 보내는 링크가 만들어졌습니다.<br><br>
+        ${escapeHtml(link)}
       `;
 
       document.getElementById("groupResult").classList.add("hidden");
       document.getElementById("shareActions").classList.remove("hidden");
-      document.getElementById("copyShareTextBtn").classList.remove("hidden");
       document.getElementById("copyAllGroupBtn").classList.add("hidden");
     }
 
-    async function makeGroupLinks() {
+    function makeGroupLinks() {
       const receiverIndex = document.getElementById("receiverName").value;
       const reason = document.getElementById("reason").value.trim();
       const rows = Array.from(document.querySelectorAll(".group-row"));
@@ -950,10 +1016,13 @@
       for (const row of rows) {
         const payerName = row.querySelector(".group-name").value.trim();
         const rawAmount = row.querySelector(".group-amount").value.trim();
-
         if (!payerName && !rawAmount) continue;
+
         let amount = "";
-        try { amount = normalizeAmount(rawAmount); } catch { alert(`${payerName || "이름 없는 항목"} 금액 수식을 확인해주세요.`); return; }
+        try { amount = normalizeAmount(rawAmount); } catch {
+          alert(`${payerName || "이름 없는 항목"} 금액 수식을 확인해주세요.`);
+          return;
+        }
 
         if (!payerName || !amount || Number(amount) <= 0) {
           alert("단체 항목에는 이름과 금액이 모두 필요합니다.");
@@ -961,8 +1030,8 @@
         }
 
         amount = String(Math.round(Number(amount)));
-        const longLink = makePayLink({ receiverIndex, amount, createdAt: Date.now(), payerName, reason });
-        items.push({ payerName, amount, reason, longLink });
+        const link = makePayLink({ receiverIndex, amount, createdAt: Date.now(), payerName, reason });
+        items.push({ payerName, amount, reason, link, shareText: makeShareText(payerName, amount, reason, link) });
       }
 
       if (!items.length) {
@@ -970,59 +1039,36 @@
         return;
       }
 
-      setMakeLinkLoading(true);
-      for (const item of items) {
-        const { url, shortened } = await shortenWithFallback(item.longLink);
-        item.link = url;
-        item.shortened = shortened;
-      }
-      setMakeLinkLoading(false);
-
       window.groupLinks = items;
       const groupResult = document.getElementById("groupResult");
       groupResult.classList.remove("hidden");
       groupResult.innerHTML = items.map((item, index) => `
         <div class="group-item">
           <strong>${escapeHtml(item.payerName)} · ${formatWon(item.amount)}</strong>
-          ${item.shortened ? '<span class="short-badge">짧은 링크</span>' : '<span class="short-badge" style="background:#fef3c7;color:#92400e">원본 링크</span>'}
           <div>${escapeHtml(item.link)}</div>
           <div class="actions">
             <button class="sub group-copy" data-index="${index}">복사</button>
             <button class="group-share" data-index="${index}">공유</button>
-            <button class="sub group-text" data-index="${index}">문구 복사</button>
           </div>
         </div>
       `).join("");
 
       groupResult.querySelectorAll(".group-copy").forEach(button => {
         button.addEventListener("click", () => {
-          const item = window.groupLinks[Number(button.dataset.index)];
-          copySpecificLink(item.link);
+          copyText(window.groupLinks[Number(button.dataset.index)].shareText, "복사되었습니다.");
         });
       });
 
       groupResult.querySelectorAll(".group-share").forEach(button => {
         button.addEventListener("click", () => {
           const item = window.groupLinks[Number(button.dataset.index)];
-          shareSpecificLink(item.payerName, item.reason, item.amount, item.link);
-        });
-      });
-
-      groupResult.querySelectorAll(".group-text").forEach(button => {
-        button.addEventListener("click", () => {
-          const item = window.groupLinks[Number(button.dataset.index)];
-          copyText(makeShareText(item.payerName, item.amount, item.reason, item.link), "카톡용 문구가 복사되었습니다.");
+          sharePayload(`${item.payerName}님 송금 요청`, item.shareText, item.link);
         });
       });
 
       document.getElementById("result").classList.add("hidden");
       document.getElementById("shareActions").classList.add("hidden");
-      document.getElementById("copyShareTextBtn").classList.add("hidden");
       document.getElementById("copyAllGroupBtn").classList.remove("hidden");
-    }
-
-    function makePayLink(data) {
-      return location.origin + location.pathname + "#p=" + encodeData(JSON.stringify(data));
     }
 
     function escapeHtml(text) {
@@ -1036,7 +1082,7 @@
     async function copyText(text, successMessage, silent = false) {
       try {
         await navigator.clipboard.writeText(text);
-        if (!silent) alert(successMessage);
+        if (!silent) showToast(successMessage);
       } catch {
         const textarea = document.createElement("textarea");
         textarea.value = text;
@@ -1047,7 +1093,7 @@
         textarea.select();
         try {
           document.execCommand("copy");
-          if (!silent) alert(successMessage);
+          if (!silent) showToast(successMessage);
         } catch {
           if (!silent) alert("복사가 안 되면 내용을 길게 눌러 직접 복사해주세요.");
         }
@@ -1056,25 +1102,13 @@
     }
 
     async function copyLink() {
-      if (!window.createdLink) { alert("먼저 송금 링크를 만들어주세요."); return; }
-      await copyText(window.createdLink, "링크가 복사되었습니다.");
-    }
-
-    async function copyShareText() {
       if (!window.shareText) { alert("먼저 송금 링크를 만들어주세요."); return; }
-      await copyText(window.shareText, "카톡용 문구가 복사되었습니다.");
+      await copyText(window.shareText, "복사되었습니다.");
     }
 
     async function copyAllGroupLinks() {
       if (!window.groupLinks?.length) { alert("복사할 링크가 없습니다."); return; }
-      const text = window.groupLinks.map(item =>
-        `${item.payerName} · ${formatWon(item.amount)}\n${makeShareText(item.payerName, item.amount, item.reason, item.link)}`
-      ).join("\n\n");
-      await copyText(text, "전체 링크와 문구가 복사되었습니다.");
-    }
-
-    async function copySpecificLink(link) {
-      await copyText(link, "링크가 복사되었습니다.");
+      await copyText(window.groupLinks.map(item => item.shareText).join("\n\n"), "전체가 복사되었습니다.");
     }
 
     async function copyAccount(silent = false) {
@@ -1087,16 +1121,11 @@
       await sharePayload(window.shareTitle, window.shareText, window.createdLink);
     }
 
-    async function shareSpecificLink(payerName, reason, amount, link) {
-      const text = makeShareText(payerName, amount, reason, link);
-      await sharePayload(`${payerName}님 송금 요청`, text, link);
-    }
-
     async function sharePayload(title, text, url) {
       if (navigator.share) {
         try { await navigator.share({ title, text, url }); } catch {}
       } else {
-        await copyText(text, "공유 문구가 복사되었습니다.");
+        await copyText(text, "복사되었습니다.");
       }
     }
 
@@ -1118,7 +1147,6 @@
       };
 
       document.addEventListener("visibilitychange", onHidden);
-
       app.schemes.forEach((scheme, index) => {
         setTimeout(() => { if (!opened) location.href = scheme; }, index * 450);
       });
