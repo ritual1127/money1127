@@ -6,28 +6,25 @@
   <meta name="format-detection" content="telephone=no" />
   <meta name="robots" content="noindex, nofollow" />
 
-  <title>돈 주세요</title>
-  <link rel="canonical" href="https://www.naver1.cloud/" />
+  <title>정산 요청</title>
 
-  <meta property="og:site_name" content="간편 송금 요청" />
+  <meta property="og:site_name" content="정산 링크" />
   <meta property="og:locale" content="ko_KR" />
-  <meta property="og:title" content="송금 요청" />
-  <meta property="og:description" content="송금 요청 링크입니다. 금액과 사유를 확인하고 송금해주세요." />
+  <meta property="og:title" content="정산 요청" />
+  <meta property="og:description" content="정산 요청 링크입니다. 금액과 사유를 확인하고 송금해주세요." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.naver1.cloud/" />
-  <meta property="og:image" content="https://www.naver1.cloud/og-image-mobile.png" />
-  <meta property="og:image:secure_url" content="https://www.naver1.cloud/og-image-mobile.png" />
+  <meta property="og:image" content="/og-image.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="1200" />
-  <meta property="og:image:alt" content="송금 요청 미리보기" />
+  <meta property="og:image:alt" content="정산 요청 미리보기" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="송금 요청" />
-  <meta name="twitter:description" content="송금 요청 링크입니다. 금액과 사유를 확인하고 송금해주세요." />
-  <meta name="twitter:image" content="https://www.naver1.cloud/og-image-mobile.png" />
+  <meta name="twitter:title" content="정산 요청" />
+  <meta name="twitter:description" content="정산 요청 링크입니다. 금액과 사유를 확인하고 송금해주세요." />
+  <meta name="twitter:image" content="/og-image.png" />
 
-  <link rel="image_src" href="https://www.naver1.cloud/og-image-mobile.png" />
+  <link rel="image_src" href="/og-image.png" />
 
   <style>
     * {
@@ -151,6 +148,19 @@
       background: #fff;
     }
 
+    input.invalid {
+      border-color: #fca5a5;
+      background: #fff5f5;
+    }
+
+    .field-error {
+      margin-top: 4px;
+      font-size: 12px;
+      color: #dc2626;
+      font-weight: 600;
+      min-height: 14px;
+    }
+
     button,
     a.button {
       width: 100%;
@@ -173,6 +183,12 @@
     button:active,
     a.button:active {
       transform: translateY(1px);
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
     }
 
     .mode-tabs {
@@ -240,6 +256,12 @@
       border: 1px solid #e2e8f0;
       box-shadow: none;
       border-radius: 999px;
+    }
+
+    .quick-amounts button.clear {
+      color: #b91c1c;
+      border-color: #fecaca;
+      background: #fff5f5;
     }
 
     .person-buttons button.active,
@@ -384,13 +406,27 @@
 
     .group-row {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 1.1fr 0.9fr auto;
       gap: 8px;
       margin-top: 8px;
+      align-items: start;
     }
 
     .group-row input {
       height: 44px;
+    }
+
+    .group-row .row-remove {
+      width: 44px;
+      min-height: 44px;
+      height: 44px;
+      padding: 0;
+      background: #fff5f5;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+      box-shadow: none;
+      font-weight: 800;
+      font-size: 16px;
     }
 
     .group-item {
@@ -417,35 +453,28 @@
       margin-top: 8px;
     }
 
+    .group-total {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #334155;
+      padding: 10px 4px 0;
+      border-top: 1px dashed #dce6f2;
+    }
+
+    .group-total span.value {
+      color: #1d4ed8;
+      font-size: 15px;
+    }
+
     .countdown-mini {
       margin-top: 12px;
       text-align: center;
       font-size: 11px;
       color: #94a3b8;
-    }
-
-    .site-footer {
-      width: min(100%, 420px);
-      margin-top: auto;
-      padding: 16px 6px 4px;
-      text-align: center;
-      font-size: 10px;
-      line-height: 1.65;
-      color: rgba(15, 23, 42, 0.38);
-    }
-
-    .site-footer a {
-      color: rgba(15, 23, 42, 0.45);
-      text-decoration: none;
-    }
-
-    .site-footer a:hover {
-      text-decoration: underline;
-    }
-
-    .site-footer .sep {
-      margin: 0 4px;
-      opacity: 0.45;
     }
 
     .footer-credit {
@@ -494,9 +523,17 @@
         font-size: 32px;
       }
 
-      .actions,
-      .group-row {
+      .actions {
         grid-template-columns: 1fr;
+      }
+
+      .group-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .group-row .row-remove {
+        grid-column: 1 / -1;
+        width: 100%;
       }
     }
   </style>
@@ -507,12 +544,12 @@
     <main class="wrap">
       <div class="brand">
         <div class="logo">₩</div>
-        <span>간편 송금 요청</span>
+        <span>정산 링크</span>
       </div>
 
       <section id="maker">
-        <h1>송금 링크 만들기</h1>
-        <p>개인 또는 단체 송금 요청 링크를 만들 수 있습니다.</p>
+        <h1>정산 링크 만들기</h1>
+        <p>개인 또는 단체 정산 요청 링크를 만들 수 있습니다.</p>
 
         <div class="mode-tabs">
           <button id="singleModeBtn" class="active" onclick="setMode('single')">개인</button>
@@ -551,21 +588,27 @@
             <button type="button" onclick="addQuickAmount(5000)">오천원</button>
             <button type="button" onclick="addQuickAmount(10000)">만원</button>
             <button type="button" onclick="addQuickAmount(50000)">5만원</button>
+            <button type="button" class="clear" onclick="clearAmount()">지우기</button>
           </div>
-          <input id="amount" type="text" inputmode="text" placeholder="예: 15000 또는 10000+5000=" />
-          <div class="hint">금액 버튼은 누를 때마다 더해집니다. 수식 끝에 = 를 붙이면 자동 계산됩니다.</div>
+          <input id="amount" type="text" inputmode="text" placeholder="예: 15000 또는 10000+5000" />
+          <div id="amountError" class="field-error"></div>
+          <div class="hint">금액 버튼은 누를 때마다 더해집니다. 수식을 입력하면 실시간으로 자동 계산됩니다.</div>
         </div>
 
         <div id="groupFields" class="hidden">
           <label for="groupCount">몇 명에게 받을까요?</label>
           <input id="groupCount" type="number" inputmode="numeric" min="1" max="20" value="3" onchange="renderGroupRows()" />
           <div id="groupRows"></div>
+          <div class="group-total">
+            <span>합계</span>
+            <span class="value" id="groupTotalValue">0원</span>
+          </div>
         </div>
 
         <label for="reason">송금 사유</label>
         <textarea id="reason" placeholder="예: 치킨"></textarea>
 
-        <button class="primary" onclick="makeLink()">링크 만들기</button>
+        <button class="primary" id="makeLinkBtn" onclick="makeLink()">링크 만들기</button>
 
         <div id="result" class="panel hidden"></div>
         <div id="groupResult" class="panel hidden"></div>
@@ -617,55 +660,77 @@
       <section id="expired" class="hidden">
         <h1>만료된 링크입니다</h1>
         <div class="panel expired-box">
-          이 송금 요청 링크는 생성 후 24시간이 지나 만료되었습니다.
+          이 정산 요청 링크는 생성 후 24시간이 지나 만료되었습니다.
         </div>
       </section>
 
       <div class="footer-credit">made by ritual</div>
     </main>
-
-    <footer class="site-footer">
-      <a href="https://www.naver1.cloud/terms.html">이용약관</a>
-      <span class="sep">|</span>
-      <a href="https://www.naver1.cloud/privacy.html">개인정보처리방침</a>
-      <span class="sep">|</span>
-      <a href="https://www.naver1.cloud/disclaimer.html">면책조항</a>
-      <span class="sep">|</span>
-      Copyright © 2026 <a href="https://www.naver1.cloud/">naver1.cloud</a>
-    </footer>
   </div>
 
   <div id="toast" class="toast"></div>
 
   <script>
     const EXPIRE_MS = 24 * 60 * 60 * 1000;
-    const SITE = "https://www.naver1.cloud";
 
     const people = [
       { name: "ritual", bank: "토스뱅크", account: "100257070784" },
       { name: "장우영", bank: "토스뱅크", account: "100167624090" }
     ];
 
+    // Each bank app entry lists custom URL schemes to try (in order),
+    // plus store fallback links used if none of the schemes open the app.
     const bankApps = {
-      kakao: { name: "카카오뱅크", schemes: ["kakaobank://send", "kakaobank://transfer", "kakaobank://"] },
-      nh: { name: "농협은행", schemes: ["nhsmartbanking://", "nhbank://", "nonghyup://"] },
-      hana: { name: "하나은행", schemes: ["hanabank://", "hana1qbank://", "hanabanking://"] },
-      shinhan: { name: "신한은행", schemes: ["shinhan-sbank://", "sol://", "shinhanbank://"] },
-      kb: { name: "국민은행", schemes: ["kbbank://", "kb-bank://", "liivbank://"] },
-      woori: { name: "우리은행", schemes: ["wooribank://", "newsmartpib://", "com.wooribank.smart.npib://"] }
+      kakao: {
+        name: "카카오뱅크",
+        schemes: ["kakaobank://send", "kakaobank://transfer", "kakaobank://"],
+        ios: "https://apps.apple.com/kr/app/id1258016944",
+        android: "https://play.google.com/store/apps/details?id=com.kakaobank.channel"
+      },
+      nh: {
+        name: "농협은행",
+        schemes: ["nhsmartbanking://", "nhbank://", "nonghyup://"],
+        ios: "https://apps.apple.com/kr/app/id417004410",
+        android: "https://play.google.com/store/apps/details?id=nh.smart"
+      },
+      hana: {
+        name: "하나은행",
+        schemes: ["hanabank://", "hana1qbank://", "hanabanking://"],
+        ios: "https://apps.apple.com/kr/app/id1550807590",
+        android: "https://play.google.com/store/apps/details?id=com.hanaskcard.paycla"
+      },
+      shinhan: {
+        name: "신한은행",
+        schemes: ["shinhan-sbank://", "sol://", "shinhanbank://"],
+        ios: "https://apps.apple.com/kr/app/id1470181479",
+        android: "https://play.google.com/store/apps/details?id=com.shinhan.sbanking"
+      },
+      kb: {
+        name: "국민은행",
+        schemes: ["kbbank://", "kb-bank://", "liivbank://"],
+        ios: "https://apps.apple.com/kr/app/id386780536",
+        android: "https://play.google.com/store/apps/details?id=com.kbstar.kbbank"
+      },
+      woori: {
+        name: "우리은행",
+        schemes: ["wooribank://", "newsmartpib://", "com.wooribank.smart.npib://"],
+        ios: "https://apps.apple.com/kr/app/id1470181479",
+        android: "https://play.google.com/store/apps/details?id=com.wooribank.smart.npib"
+      }
     };
 
     const maker = document.getElementById("maker");
     const payer = document.getElementById("payer");
     const expired = document.getElementById("expired");
     const amountInput = document.getElementById("amount");
+    const amountError = document.getElementById("amountError");
 
     let mode = "single";
     let currentReceiver = null;
     let countdownTimer = null;
     let toastTimer = null;
 
-    amountInput.addEventListener("input", () => maybeCalculateInput(amountInput));
+    amountInput.addEventListener("input", () => liveEvaluate(amountInput, amountError));
 
     function showToast(message) {
       const toast = document.getElementById("toast");
@@ -689,8 +754,15 @@
     }
 
     function addQuickAmount(value) {
-      const current = Number(amountInput.value.replaceAll(",", "").replace(/[^0-9]/g, "")) || 0;
+      const current = Number(amountInput.value.replaceAll(",", "").replace(/[^0-9.]/g, "")) || 0;
       amountInput.value = String(current + value);
+      liveEvaluate(amountInput, amountError);
+    }
+
+    function clearAmount() {
+      amountInput.value = "";
+      amountError.textContent = "";
+      amountInput.classList.remove("invalid");
     }
 
     function renderGroupRows() {
@@ -708,41 +780,103 @@
         row.className = "group-row";
         row.innerHTML = `
           <input class="group-name" placeholder="${i + 1}번 이름" value="${escapeAttribute(oldValues[i]?.name || "")}" />
-          <input class="group-amount" type="text" inputmode="text" placeholder="금액" value="${escapeAttribute(oldValues[i]?.amount || "")}" />
+          <div>
+            <input class="group-amount" type="text" inputmode="text" placeholder="금액 또는 수식" value="${escapeAttribute(oldValues[i]?.amount || "")}" />
+            <div class="field-error group-amount-error"></div>
+          </div>
+          <button type="button" class="row-remove" title="이 항목 삭제">×</button>
         `;
         groupRows.appendChild(row);
       }
 
       groupRows.querySelectorAll(".group-amount").forEach(input => {
-        input.addEventListener("input", () => maybeCalculateInput(input));
+        const errorEl = input.parentElement.querySelector(".group-amount-error");
+        input.addEventListener("input", () => {
+          liveEvaluate(input, errorEl);
+          updateGroupTotal();
+        });
       });
+
+      groupRows.querySelectorAll(".row-remove").forEach(button => {
+        button.addEventListener("click", () => {
+          const row = button.closest(".group-row");
+          row.remove();
+          document.getElementById("groupCount").value = groupRows.querySelectorAll(".group-row").length;
+          updateGroupTotal();
+        });
+      });
+
+      updateGroupTotal();
     }
 
-    function maybeCalculateInput(input) {
-      const value = input.value.trim();
-      if (value.endsWith("=")) {
-        const expression = value.slice(0, -1).replaceAll(",", "");
+    function updateGroupTotal() {
+      const rows = Array.from(document.querySelectorAll(".group-row"));
+      let total = 0;
+      for (const row of rows) {
+        const raw = row.querySelector(".group-amount").value.trim();
+        if (!raw) continue;
         try {
-          const result = calculateExpression(expression);
-          if (Number.isFinite(result) && result >= 0) {
-            input.value = String(Math.round(result));
-          }
+          const value = previewAmount(raw);
+          if (Number.isFinite(value) && value > 0) total += value;
         } catch {}
+      }
+      document.getElementById("groupTotalValue").textContent = formatWon(Math.round(total));
+    }
+
+    // Evaluates the current input live (without requiring a trailing "=")
+    // and shows an inline error if the expression is invalid, without
+    // blocking further typing.
+    function liveEvaluate(input, errorEl) {
+      const value = input.value.trim();
+      input.classList.remove("invalid");
+      if (errorEl) errorEl.textContent = "";
+
+      if (!value) return;
+
+      // Allow the user to keep typing a partial expression like "1000+"
+      // without flashing an error on every keystroke.
+      if (/[+\-*/.]$/.test(value)) return;
+
+      if (!/^[0-9+\-*/().\s]+$/.test(value)) {
+        input.classList.add("invalid");
+        if (errorEl) errorEl.textContent = "숫자와 + - * / ( ) 만 사용할 수 있어요.";
+        return;
+      }
+
+      try {
+        const result = calculateExpression(value);
+        if (!Number.isFinite(result)) throw new Error("invalid");
+        if (result < 0) {
+          input.classList.add("invalid");
+          if (errorEl) errorEl.textContent = "금액은 0보다 커야 해요.";
+        }
+      } catch {
+        input.classList.add("invalid");
+        if (errorEl) errorEl.textContent = "수식을 확인해주세요.";
       }
     }
 
     function calculateExpression(expression) {
       if (!/^[0-9+\-*/().\s]+$/.test(expression)) throw new Error("invalid");
+      // eslint-disable-next-line no-new-func
       return Function('"use strict"; return (' + expression + ')')();
+    }
+
+    // Returns the numeric value an input would resolve to, for live totals,
+    // without mutating the input's displayed value.
+    function previewAmount(value) {
+      const clean = value.replaceAll(",", "").trim();
+      if (/[+\-*/]/.test(clean)) return calculateExpression(clean);
+      return Number(clean);
     }
 
     function normalizeAmount(value) {
       const clean = value.replaceAll(",", "").trim();
-      if (clean.endsWith("=")) return String(Math.round(calculateExpression(clean.slice(0, -1))));
-      if (/^[0-9+\-*/().\s]+$/.test(clean) && /[+\-*/]/.test(clean)) {
-        return String(Math.round(calculateExpression(clean)));
-      }
-      return clean;
+      if (!clean) throw new Error("empty");
+      if (!/^[0-9+\-*/().\s]+$/.test(clean)) throw new Error("invalid characters");
+      const result = calculateExpression(clean);
+      if (!Number.isFinite(result) || result <= 0) throw new Error("invalid result");
+      return String(Math.round(result));
     }
 
     function encodeBytes(bytes) {
@@ -758,14 +892,6 @@
       const bytes = new Uint8Array(binary.length);
       for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
       return bytes;
-    }
-
-    function encodeData(text) {
-      return encodeBytes(new TextEncoder().encode(text));
-    }
-
-    function decodeData(text) {
-      return new TextDecoder().decode(decodeBytes(text));
     }
 
     function packBinary(data) {
@@ -844,7 +970,7 @@
       try {
         return unpackBinary(bytes);
       } catch {
-        return normalizeLegacyObject(JSON.parse(decodeData(token)));
+        return normalizeLegacyObject(JSON.parse(new TextDecoder().decode(decodeBytes(token))));
       }
     }
 
@@ -883,7 +1009,7 @@
 
     function makePayLink(data) {
       const token = encodeBytes(packBinary(data));
-      return SITE + "/#" + token;
+      return location.origin + location.pathname + "#" + token;
     }
 
     function parseHashToken() {
@@ -919,7 +1045,7 @@
       maker.classList.add("hidden");
       payer.classList.add("hidden");
       expired.classList.remove("hidden");
-      document.title = "만료된 송금 요청";
+      document.title = "만료된 정산 요청";
     }
 
     function openPaymentPage() {
@@ -976,14 +1102,19 @@
       const reason = document.getElementById("reason").value.trim();
       let amount = "";
 
-      try { amount = normalizeAmount(amountRaw); } catch { alert("금액 수식을 확인해주세요."); return; }
-
-      if (!payerName || !amount || Number(amount) <= 0) {
-        alert("보낼 사람 이름과 금액을 입력해주세요.");
+      try {
+        amount = normalizeAmount(amountRaw);
+      } catch {
+        amountInput.classList.add("invalid");
+        amountError.textContent = "금액 수식을 확인해주세요.";
         return;
       }
 
-      amount = String(Math.round(Number(amount)));
+      if (!payerName) {
+        alert("보낼 사람 이름을 입력해주세요.");
+        return;
+      }
+
       document.getElementById("amount").value = amount;
 
       const amountText = formatWon(amount);
@@ -1018,18 +1149,19 @@
         const rawAmount = row.querySelector(".group-amount").value.trim();
         if (!payerName && !rawAmount) continue;
 
+        if (!payerName) {
+          alert("단체 항목에는 이름이 필요합니다.");
+          return;
+        }
+
         let amount = "";
-        try { amount = normalizeAmount(rawAmount); } catch {
-          alert(`${payerName || "이름 없는 항목"} 금액 수식을 확인해주세요.`);
+        try {
+          amount = normalizeAmount(rawAmount);
+        } catch {
+          alert(`${payerName} 님의 금액 수식을 확인해주세요.`);
           return;
         }
 
-        if (!payerName || !amount || Number(amount) <= 0) {
-          alert("단체 항목에는 이름과 금액이 모두 필요합니다.");
-          return;
-        }
-
-        amount = String(Math.round(Number(amount)));
         const link = makePayLink({ receiverIndex, amount, createdAt: Date.now(), payerName, reason });
         items.push({ payerName, amount, reason, link, shareText: makeShareText(payerName, amount, reason, link) });
       }
@@ -1040,9 +1172,15 @@
       }
 
       window.groupLinks = items;
+      const total = items.reduce((sum, item) => sum + Number(item.amount), 0);
       const groupResult = document.getElementById("groupResult");
       groupResult.classList.remove("hidden");
-      groupResult.innerHTML = items.map((item, index) => `
+      groupResult.innerHTML = `
+        <div class="group-total" style="border-top:0; margin-top:0; padding-top:0;">
+          <span>${items.length}명 합계</span>
+          <span class="value">${formatWon(total)}</span>
+        </div>
+      ` + items.map((item, index) => `
         <div class="group-item">
           <strong>${escapeHtml(item.payerName)} · ${formatWon(item.amount)}</strong>
           <div>${escapeHtml(item.link)}</div>
@@ -1102,7 +1240,7 @@
     }
 
     async function copyLink() {
-      if (!window.shareText) { alert("먼저 송금 링크를 만들어주세요."); return; }
+      if (!window.shareText) { alert("먼저 정산 링크를 만들어주세요."); return; }
       await copyText(window.shareText, "복사되었습니다.");
     }
 
@@ -1117,7 +1255,7 @@
     }
 
     async function shareLink() {
-      if (!window.createdLink) { alert("먼저 송금 링크를 만들어주세요."); return; }
+      if (!window.createdLink) { alert("먼저 정산 링크를 만들어주세요."); return; }
       await sharePayload(window.shareTitle, window.shareText, window.createdLink);
     }
 
@@ -1131,6 +1269,13 @@
 
     function toggleMoreBanks() {
       document.getElementById("moreBanks").classList.toggle("hidden");
+    }
+
+    function detectPlatform() {
+      const ua = navigator.userAgent || "";
+      if (/iPhone|iPad|iPod/i.test(ua)) return "ios";
+      if (/Android/i.test(ua)) return "android";
+      return "other";
     }
 
     function openBankApp(bankKey) {
@@ -1153,7 +1298,20 @@
 
       setTimeout(() => {
         document.removeEventListener("visibilitychange", onHidden);
-        if (!opened) alert(`${app.name} 앱을 열지 못했습니다. 계좌번호는 복사해두었습니다.`);
+        if (opened) return;
+
+        // None of the custom schemes opened the app — fall back to the
+        // relevant app store link instead of a dead-end alert, and keep
+        // the account number copied so the user can still send manually.
+        copyAccount(true);
+        const platform = detectPlatform();
+        const storeUrl = platform === "ios" ? app.ios : platform === "android" ? app.android : null;
+
+        if (storeUrl && confirm(`${app.name} 앱을 열지 못했습니다. 계좌번호는 복사해두었습니다.\n앱 설치 페이지로 이동할까요?`)) {
+          location.href = storeUrl;
+        } else {
+          alert(`${app.name} 앱을 열지 못했습니다. 계좌번호는 복사해두었습니다.`);
+        }
       }, 2600);
     }
 
