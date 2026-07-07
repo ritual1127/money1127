@@ -55,6 +55,76 @@
       color: #172033;
     }
 
+    /* ========================================================
+       1. 로딩 스플래시 (Loading Splash) 스타일
+       ======================================================== */
+    .splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: #ffffff;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+    }
+    .loading-bar-wrap {
+      width: 140px;
+      height: 4px;
+      background: #e2e8f0;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .loading-bar-inner {
+      width: 0%;
+      height: 100%;
+      background: #2563eb;
+      animation: fillBar 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    .splash-screen.fade-out {
+      transform: translateY(-100%);
+    }
+    @keyframes fillBar { to { width: 100%; } }
+
+    /* ========================================================
+       2. 히어로 등장 (Hero Reveal) 애니메이션 설정
+       ======================================================== */
+    @keyframes heroRevealUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 초기 상태는 투명하게 숨김 */
+    .hero-animate {
+      opacity: 0;
+    }
+
+    /* 스플래시 완료 후 클래스가 붙으면 애니메이션 작동 */
+    .start-animation .hero-animate {
+      animation: heroRevealUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* 요소별 순차적 딜레이(지연 시간) 설정 */
+    .start-animation .wrap          { animation-delay: 0.0s; }
+    .start-animation .brand         { animation-delay: 0.15s; }
+    .start-animation .reveal-h1     { animation-delay: 0.23s; }
+    .start-animation .reveal-p      { animation-delay: 0.29s; }
+    .start-animation .reveal-form   { animation-delay: 0.35s; }
+    .start-animation .primary       { animation-delay: 0.42s; }
+    .start-animation .footer-credit { animation-delay: 0.50s; }
+    .start-animation .site-footer   { animation-delay: 0.58s; }
+
+
     .page {
       width: 100%;
       min-height: 100dvh;
@@ -170,6 +240,10 @@
       box-shadow: 0 6px 18px rgba(37, 99, 235, 0.18);
     }
 
+    .primary {
+      margin-top: 14px;
+    }
+
     button:active,
     a.button:active {
       transform: translateY(1px);
@@ -247,10 +321,6 @@
       background: #eff6ff;
       color: #1d4ed8;
       border-color: #bfdbfe;
-    }
-
-    .primary {
-      margin-top: 14px;
     }
 
     .sub {
@@ -503,69 +573,78 @@
 </head>
 
 <body>
-  <div class="page">
-    <main class="wrap">
-      <div class="brand">
+  <div class="splash-screen" id="splash">
+    <div class="loading-bar-wrap">
+      <div class="loading-bar-inner" id="loadingBar"></div>
+    </div>
+  </div>
+
+  <div class="page" id="mainPage">
+    <main class="wrap hero-animate">
+      
+      <div class="brand hero-animate">
         <div class="logo">₩</div>
         <span>간편 송금 요청</span>
       </div>
 
       <section id="maker">
-        <h1>송금 링크 만들기</h1>
-        <p>개인 또는 단체 송금 요청 링크를 만들 수 있습니다.</p>
+        <h1 class="hero-animate reveal-h1">송금 링크 만들기</h1>
+        <p class="hero-animate reveal-p">개인 또는 단체 송금 요청 링크를 만들 수 있습니다.</p>
 
-        <div class="mode-tabs">
-          <button id="singleModeBtn" class="active" onclick="setMode('single')">개인</button>
-          <button id="groupModeBtn" onclick="setMode('group')">단체</button>
-        </div>
-
-        <div class="person-buttons">
-          <button id="parkBtn" class="active" onclick="setPerson('park')">ritual</button>
-          <button id="jangBtn" onclick="setPerson('jang')">장우영</button>
-        </div>
-
-        <label for="receiverName">받는 사람 이름</label>
-        <select id="receiverName">
-          <option value="0" selected>ritual</option>
-          <option value="1">장우영</option>
-        </select>
-
-        <label for="bank">은행명</label>
-        <select id="bank">
-          <option value="0" selected>토스뱅크</option>
-        </select>
-
-        <label for="account">계좌번호</label>
-        <select id="account">
-          <option value="0" selected>100257070784</option>
-          <option value="1">100167624090</option>
-        </select>
-
-        <div id="singleFields">
-          <label for="payerName">보낼 사람 이름</label>
-          <input id="payerName" placeholder="예: 김민수" />
-
-          <label for="amount">받을 금액</label>
-          <div class="quick-amounts">
-            <button type="button" onclick="addQuickAmount(1000)">천원</button>
-            <button type="button" onclick="addQuickAmount(5000)">오천원</button>
-            <button type="button" onclick="addQuickAmount(10000)">만원</button>
-            <button type="button" onclick="addQuickAmount(50000)">5만원</button>
+        <div class="hero-animate reveal-form">
+          <div class="mode-tabs">
+            <button id="singleModeBtn" class="active" onclick="setMode('single')">개인</button>
+            <button id="groupModeBtn" onclick="setMode('group')">단체</button>
           </div>
-          <input id="amount" type="text" inputmode="text" placeholder="예: 15000 또는 10000+5000=" />
-          <div class="hint">금액 버튼은 누를 때마다 더해집니다. 수식 끝에 = 를 붙이면 자동 계산됩니다.</div>
+
+          <div class="person-buttons">
+            <button id="parkBtn" class="active" onclick="setPerson('park')">ritual</button>
+            <button id="jangBtn" onclick="setPerson('jang')">장우영</button>
+          </div>
+
+          <label for="receiverName">받는 사람 이름</label>
+          <select id="receiverName">
+            <option value="0" selected>ritual</option>
+            <option value="1">장우영</option>
+          </select>
+
+          <label for="bank">은행명</label>
+          <select id="bank">
+            <option value="0" selected>토스뱅크</option>
+          </select>
+
+          <label for="account">계좌번호</label>
+          <select id="account">
+            <option value="0" selected>100257070784</option>
+            <option value="1">100167624090</option>
+          </select>
+
+          <div id="singleFields">
+            <label for="payerName">보낼 사람 이름</label>
+            <input id="payerName" placeholder="예: 김민수" />
+
+            <label for="amount">받을 금액</label>
+            <div class="quick-amounts">
+              <button type="button" onclick="addQuickAmount(1000)">천원</button>
+              <button type="button" onclick="addQuickAmount(5000)">오천원</button>
+              <button type="button" onclick="addQuickAmount(10000)">만원</button>
+              <button type="button" onclick="addQuickAmount(50000)">5만원</button>
+            </div>
+            <input id="amount" type="text" inputmode="text" placeholder="예: 15000 또는 10000+5000=" />
+            <div class="hint">금액 버튼은 누를 때마다 더해집니다. 수식 끝에 = 를 붙이면 자동 계산됩니다.</div>
+          </div>
+
+          <div id="groupFields" class="hidden">
+            <label for="groupCount">몇 명에게 받을까요?</label>
+            <input id="groupCount" type="number" inputmode="numeric" min="1" max="20" value="3" onchange="renderGroupRows()" />
+            <div id="groupRows"></div>
+          </div>
+
+          <label for="reason">송금 사유</label>
+          <textarea id="reason" placeholder="예: 치킨"></textarea>
         </div>
 
-        <div id="groupFields" class="hidden">
-          <label for="groupCount">몇 명에게 받을까요?</label>
-          <input id="groupCount" type="number" inputmode="numeric" min="1" max="20" value="3" onchange="renderGroupRows()" />
-          <div id="groupRows"></div>
-        </div>
-
-        <label for="reason">송금 사유</label>
-        <textarea id="reason" placeholder="예: 치킨"></textarea>
-
-        <button class="primary" onclick="makeLink()">링크 만들기</button>
+        <button class="primary hero-animate" onclick="makeLink()">링크 만들기</button>
 
         <div id="result" class="panel hidden"></div>
         <div id="groupResult" class="panel hidden"></div>
@@ -621,10 +700,10 @@
         </div>
       </section>
 
-      <div class="footer-credit">made by ritual</div>
+      <div class="footer-credit hero-animate">made by ritual</div>
     </main>
 
-    <footer class="site-footer">
+    <footer class="site-footer hero-animate">
       <a href="https://www.naver1.cloud/terms.html">이용약관</a>
       <span class="sep">|</span>
       <a href="https://www.naver1.cloud/privacy.html">개인정보처리방침</a>
@@ -638,6 +717,22 @@
   <div id="toast" class="toast"></div>
 
   <script>
+    // [로딩 스플래시 완료 후 히어로 재생 제어 스크립트]
+    const splash = document.getElementById('splash');
+    const loadingBar = document.getElementById('loadingBar');
+    const mainPage = document.getElementById('mainPage');
+
+    loadingBar.addEventListener('animationend', () => {
+      // 1. 스플래시 화면 위로 걷어내기
+      splash.classList.add('fade-out');
+      
+      // 2. 걷힘과 동시에 페이지 내부 요소 애니메이션 트리거 활성화
+      setTimeout(() => {
+        mainPage.classList.add('start-animation');
+      }, 100);
+    });
+
+    // --- 기존 기능 로직 유지 ---
     const EXPIRE_MS = 24 * 60 * 60 * 1000;
     const SITE = "https://www.naver1.cloud";
 
@@ -1062,7 +1157,7 @@
       groupResult.querySelectorAll(".group-share").forEach(button => {
         button.addEventListener("click", () => {
           const item = window.groupLinks[Number(button.dataset.index)];
-          sharePayload(`${item.payerName}님 송금 요청`, item.shareText, item.link);
+          sharePayload(`${item.payerName}님송금 요청`, item.shareText, item.link);
         });
       });
 
