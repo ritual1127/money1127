@@ -1,3 +1,4 @@
+/*
 <!doctype html>
 <html lang="ko">
 <head>
@@ -1256,5 +1257,156 @@
     renderGroupRows();
     openPaymentPage();
   </script>
+</body>
+</html> */
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOTICE : 이사했습니다</title>
+    
+    <meta http-equiv="refresh" content="5;url=https://tossmoney.site">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background: radial-gradient(circle at 50% 50%, #1e1e2f 0%, #0b0b12 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            color: #ffffff;
+        }
+        
+        /* 은은하게 움직이는 배경 오브젝트 */
+        .bg-glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            filter: blur(120px);
+            opacity: 0.3;
+            z-index: 0;
+            animation: floatGlow 8s ease-in-out infinite alternate;
+        }
+
+        /* 메인 카드 디자인 (유리 느낌) */
+        .notice-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 50px 40px;
+            border-radius: 28px;
+            text-align: center;
+            max-width: 440px;
+            width: 90%;
+            z-index: 1;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #6366f1, #3b82f6);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 6px 16px;
+            border-radius: 100px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            color: #94a3b8;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        p strong {
+            color: #f43f5e; /* 강조 컬러 */
+            font-weight: 700;
+        }
+
+        /* 깔롱한 그라데이션 버튼 */
+        .move-button {
+            display: block;
+            background: linear-gradient(90deg, #4f46e5, #06b6d4);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.25);
+        }
+
+        .move-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(79, 70, 229, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .move-button:active {
+            transform: translateY(-1px);
+        }
+
+        .timer-text {
+            margin-top: 24px;
+            font-size: 13px;
+            color: #64748b;
+            letter-spacing: 0.5px;
+        }
+
+        /* 애니메이션 효과 */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes floatGlow {
+            0% { transform: translate(-20px, -20px); }
+            100% { transform: translate(20px, 20px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <div class="notice-card">
+        <span class="badge">WE HAVE MOVED</span>
+        <h1>사이트 이전 안내</h1>
+        <p>기존 웹사이트가 종료되었습니다.<br>새롭게 단장한 <strong>tossmoney.site</strong>에서<br>더 쾌적하게 이용해 보세요.</p>
+        
+        <a href="https://tossmoney.site" class="move-button">새로운 사이트로 입장하기</a>
+        
+        <div class="timer-text">5초 후 자동으로 이동합니다...</div>
+    </div>
+
 </body>
 </html>
